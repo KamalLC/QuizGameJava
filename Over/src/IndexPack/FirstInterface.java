@@ -4,6 +4,8 @@ import InstructionPack.*;
 import RulesPack.*;
 import QuestionPack.*;
 import RegisterPack.*;
+import java.awt.*;
+
 // import kamel.*;
 // import register.*;
 // import testFolder.*;
@@ -20,11 +22,12 @@ import java.sql.ResultSet;
 import javax.swing.*;
 
 public class FirstInterface implements ActionListener{
-	JFrame myFrame;
+    JFrame myFrame;
     Connection conn;
     Statement stm;
     ResultSet rst;
-    JButton b0, b1, b2, b3, b4, test;
+    JButton rules, play, instruction, exit, test;
+    JLabel register;
     GridLayout gdl;
     public static FirstInterface fi;
     JLabel lbl, indexLabel;
@@ -45,73 +48,124 @@ public class FirstInterface implements ActionListener{
         // frame.setVisible(true);
        
         indexLabel = new JLabel();
-        indexLabel.setBounds(0, 0, 1000, 1000);
+        indexLabel.setBounds(0, 0, 1800, 1000);
         indexLabel.setOpaque(true);
         indexLabel.setBackground(Color.decode("#FFFFFF"));
         
+        lbl = new JLabel("Welcome to Who wants to be a Millionare");
+        lbl.setForeground(Color.WHITE);
+        lbl.setBounds(0, 0, 1300, 70);
+        lbl.setFont(new Font("Monospace", Font.PLAIN, 20));
+        lbl.setBackground(new Color(153,0,0) );
+        lbl.setOpaque(true);
+        lbl.setHorizontalAlignment(SwingConstants.CENTER);
+        lbl.setVerticalAlignment(SwingConstants.CENTER);
 
-        lbl = new JLabel("!!!Welcome to Who wants to be a Millionare!!!");
-        lbl.setBounds(200, 30, 1000, 100);
-        lbl.setForeground(Color.BLACK);
-        lbl.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        
         indexLabel.add(lbl);
 
-        b0 = new JButton("Register");
-        b0.setToolTipText("Click to Register");
-        b0.setBounds(400, 180, 200, 50 );
-        b0.setBackground(Color.YELLOW);
-        b0.setForeground(Color.WHITE);
+        // register = new JButton("Register");
+        // register.setToolTipText("Click to Register");
+        // register.setBounds(400, 180, 200, 50 );
+        // register.setBackground(Color.YELLOW);
+        // register.setForeground(Color.WHITE);
         
+        // register = new JButton("Register");
+        // register.setToolTipText("Click to Register");
+        // register.setBounds(450, 150, 300, 50 );
+        // register.setBackground( new Color(205, 0, 0) );
+        // register.setForeground(Color.WHITE);
         
-        indexLabel.add(b0);
+        // indexLabel.add(register);
+
+        register = new JLabel("Register");
+        register.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        register.setForeground(Color.BLUE);
+        register.setOpaque(false);
         
+        register.setBounds(1000, 100, 400, 22);
+        indexLabel.add(register);
+        
+        rules = new JButton("Rules");
+        rules.setToolTipText("Click for Rules");
+        rules.setBounds(80, 250, 400, 70);
+        rules.setBackground( new Color(205, 0, 0) );
+        rules.setFont(new Font("MOnospace", Font.BOLD, 15));
+        rules.setForeground(Color.white);
+        indexLabel.add(rules);
 
-        b1 = new JButton("Rules and Regulation");
-        b1.setToolTipText("Click for Rules");
-        b1.setBounds(400, 280, 200, 50);
-        b1.setBackground(Color.black);
-        b1.setForeground(Color.white);
-        indexLabel.add(b1);
+        play = new JButton("play");
+        
+        play.setBounds(680, 250, 400, 70);
+        play.setForeground(Color.white);
+        play.setBackground( new Color(205, 0, 0) );
+        play.setFont(new Font("MOnospace", Font.BOLD, 15));
+        indexLabel.add(play);
 
-        b2 = new JButton("Play");
-        b2.setBounds(400, 380, 200, 50);
-        b2.setForeground(Color.white);
-        b2.setBackground(Color.black);
-        indexLabel.add(b2);
+        // instruction = new JButton("Instruction");
+        // instruction.setBounds(400, 480, 200, 50);
+        // instruction.setForeground(Color.white);
+        // instruction.setBackground(Color.magenta);
 
-        b3 = new JButton("Instruction");
-        b3.setBounds(400, 480, 200, 50);
-        b3.setForeground(Color.white);
-        b3.setBackground(Color.magenta);
-        indexLabel.add(b3);
+        instruction = new JButton("Instruction");
+        instruction.setBounds(80, 420, 400, 70);
+        instruction.setForeground(Color.white);
+        instruction.setBackground( new Color(205, 0, 0) );
+        instruction.setFont(new Font("MOnospace", Font.BOLD, 15));
+        indexLabel.add(instruction);
 
-        b4 = new JButton("Exit");
-        b4.setBounds(400, 580, 200, 50);
-        b4.setForeground(Color.white);
-        b4.setBackground(Color.black);
-        indexLabel.add(b4);
+        // exit = new JButton("Exit");
+        // exit.setBounds(400, 580, 200, 50);
+        // exit.setForeground(Color.white);
+        // exit.setBackground(Color.black);
+
+        exit = new JButton("Exit");
+        exit.setBounds(680, 420, 400, 70);
+        exit.setForeground(Color.white);
+        exit.setBackground( new Color(205, 0, 0) );
+        exit.setFont(new Font("MOnospace", Font.BOLD, 15));
+        indexLabel.add(exit);
 
         test = new JButton("Test");
         test.setBounds(400, 650, 200, 50);
         test.setBackground(Color.white);
         // add(test);
 
-        b0.addActionListener(this);
-        b1.addActionListener(this);
-        b2.addActionListener(this);
-        b3.addActionListener(this);
-        b4.addActionListener(this);
+        // register.addActionListener(this);
+        rules.addActionListener(this);
+        play.addActionListener(this);
+        instruction.addActionListener(this);
+        exit.addActionListener(this);
         test.addActionListener(this);
+
+        register.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        register.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+              try {
+                 
+                indexLabel.setVisible(false);
+                 
+
+                  // this is for linking another file where should this label directs.
+                  new Register(myFrame, stm);
+              } catch (Exception e1) {
+  
+                  e1.printStackTrace();
+              }
+          }
+      });
 
 
         frame.add(indexLabel);
+
+        
 
     }
     public void actionPerformed(ActionEvent ae){
         JButton eventSource = (JButton)ae.getSource();
         
-        if(eventSource == b2){
+        if(eventSource == play){
             
             indexLabel.setVisible(false);
             try{
@@ -130,24 +184,22 @@ public class FirstInterface implements ActionListener{
                 System.out.println("error: " + e.getMessage());
                 // System.out.println(e.getMessage());
             }
-            
 
-        }else if(eventSource == b3){
+        }else if(eventSource == instruction){
             
             indexLabel.setVisible(false);
             new Instruction(myFrame, stm);
 
-        }else if(eventSource == b1){
+        }else if(eventSource == rules){
             
             indexLabel.setVisible(false);
             new Rules(myFrame, stm);
 
         }
-         else if(eventSource == b0){
-            indexLabel.setVisible(false);
-             // new Question(myFrame, stm);
-             new Register(myFrame, stm);
-         }
+        //  else if(eventSource == register){
+        //     indexLabel.setVisible(false);
+        //      new Question(myFrame, stm);
+        //  }
         // else if(eventSource == test){
         //     new testFile("Register Section");
         // }

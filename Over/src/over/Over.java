@@ -42,8 +42,8 @@ public class Over implements ActionListener{
         frame = new JFrame();
 
 
-        frame.setSize(1000,1000);
-        frame.setLocation(10,10);
+        frame.setSize(1800, 1000);
+        frame.setLocation(0, 0);
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
