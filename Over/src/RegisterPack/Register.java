@@ -1,179 +1,209 @@
-// package RegisterPack;
+package RegisterPack;
 
+import IndexPack.*;
+import QuestionPack.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Register {
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+public class Register implements ActionListener {
     JFrame f;
-    JLabel lbl, msglbl ,toplbl, Instruction1, Instruction2, Instruction3, Instruction4, Instruction5, Instruction6, description1, description2, description6, description3, description4, description5, back ;
+    Statement stm;
+    ResultSet rst, rst2;
+    JLabel lbl, nameLabel, emailLabel, pwdLabel, confirmPasswordLabel;
+    JButton login, register, submit, cancel;
+    JTextField username, email, password, confirmPassword;
+    JCheckBox checkBox;
     
-    public Register(){
-        f = new JFrame();
-        f.setSize(1920,1080);
-        f.setLocation(10,10);
-        f.setLayout(null);
-        f.setDefaultCloseOperation(f.EXIT_ON_CLOSE);
-        f.setVisible(true);
-        // f.getContentPane().setBackground(new Color(51, 153, 255));
-        // f.getContentPane().setBackground(new Color(51, 204, 255));
-        // f.getContentPane().setBackground(new Color(0, 0, 204));
-        f.getContentPane().setBackground(new Color(204, 204, 204));
+    public Register(JFrame frame, Statement st){ 
+        f = frame;
+        stm = st;
+        // f.getContentPane().setBackground(new Color(204, 204, 204));
 
         lbl = new JLabel();
-        toplbl = new JLabel("INSTRUCTION SECTION");
-        msglbl= new JLabel("* First, please familiar with Instructions and play well. Good luck for success.");
-        Instruction1 = new JLabel("Instruction 1 -->");
-        Instruction2 = new JLabel("Instruction 2 -->");
-        Instruction3 = new JLabel("Instruction 3 -->");
-        Instruction4 = new JLabel("Instruction 4 -->");
-        Instruction5 = new JLabel("Instruction 5 -->");
-        Instruction6 = new JLabel("Instruction 6 -->");
-      
- 
+        lbl.setOpaque(true);
+        lbl.setBackground(Color.decode("#FFFFFF"));
+        lbl.setBounds(0, 0, 1000, 1000);
 
-        lbl.setSize(1450, 1000);
-        lbl.setLocation(0, 0);
+        login = new JButton("LOGIN");
+        login.setBounds(400, 250, 100, 30);
+        login.addActionListener(this);
+        lbl.add(login);
+        login.setBackground(Color.white);
 
-        toplbl.setForeground(Color.WHITE);
-        toplbl.setBounds(0, 0, 1285, 40);
-        toplbl.setFont(new Font("MOnospace", Font.PLAIN, 20));
-        toplbl.setBackground(new Color(153,0,0) );
-        // toplbl.setBackground(new Color(102,102,102) );
-        // toplbl.setBackground(new Color(51,51,51) );
-        toplbl.setOpaque(true);
-        toplbl.setHorizontalAlignment(SwingConstants.CENTER);
-        toplbl.setVerticalAlignment(SwingConstants.CENTER);
+        register = new JButton("REGISTER");
+        register.setBounds(250, 250, 100, 30);
+        register.addActionListener(this);
+        lbl.add(register);
+        register.setBackground(Color.green);
 
-        msglbl.setBounds(200, 50, 800, 16);
-        msglbl.setForeground(Color.RED);
-        msglbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        nameLabel = new JLabel("Full Name");
+        nameLabel.setBounds(200, 300, 120, 30);
+        lbl.add(nameLabel);
 
-        //back button
-        back = new JLabel("<-- Back");
-        back.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        back.setForeground(new Color(205,0,0) );
-        
-        back.setBounds(80, 580, 120, 22);
+        username = new JTextField("");
+        username.setBounds(350, 300, 200, 30);
+        lbl.add(username);
 
-        Instruction1.setBounds(80, 120, 120, 22);
-        Instruction2.setBounds(80, 200, 120, 22);
-        Instruction3.setBounds(80, 280, 120, 22);
-        Instruction4.setBounds(80, 360, 120, 22);
-        Instruction5.setBounds(80, 440, 120, 22);
-        Instruction6.setBounds(80, 520, 120, 22);
-        Instruction1.setForeground(Color.WHITE);
-        Instruction2.setForeground(Color.WHITE);
-        Instruction3.setForeground(Color.WHITE);
-        Instruction4.setForeground(Color.WHITE);
-        Instruction5.setForeground(Color.WHITE);
-        Instruction6.setForeground(Color.WHITE);
-        Instruction1.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        Instruction2.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        Instruction3.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        Instruction4.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        Instruction5.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        Instruction6.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        emailLabel = new JLabel("Email");
+        emailLabel.setBounds(200, 350, 120, 30);
+        lbl.add(emailLabel);
 
-        Instruction1.setHorizontalAlignment(SwingConstants.CENTER);
-        Instruction1.setVerticalAlignment(SwingConstants.CENTER);
-        Instruction2.setHorizontalAlignment(SwingConstants.CENTER);
-        Instruction2.setVerticalAlignment(SwingConstants.CENTER);
-        Instruction3.setHorizontalAlignment(SwingConstants.CENTER);
-        Instruction3.setVerticalAlignment(SwingConstants.CENTER);
-        Instruction4.setHorizontalAlignment(SwingConstants.CENTER);
-        Instruction4.setVerticalAlignment(SwingConstants.CENTER);
-        Instruction5.setHorizontalAlignment(SwingConstants.CENTER);
-        Instruction5.setVerticalAlignment(SwingConstants.CENTER);
-        Instruction6.setHorizontalAlignment(SwingConstants.CENTER);
-        Instruction6.setVerticalAlignment(SwingConstants.CENTER);
-        
-        Instruction1.setBackground(new Color(205,0,0) );
-        Instruction1.setOpaque(true);
-        Instruction2.setBackground(new Color(205,0,0) );
-        Instruction2.setOpaque(true);
-        Instruction3.setBackground(new Color(205,0,0) );
-        Instruction3.setOpaque(true);
-        Instruction4.setBackground(new Color(205,0,0) );
-        Instruction4.setOpaque(true);
-        Instruction5.setBackground(new Color(205,0,0) );
-        Instruction5.setOpaque(true);
-        Instruction6.setBackground(new Color(205,0,0) );
-        Instruction6.setOpaque(true);
+        email = new JTextField("");
+        email.setBounds(350, 350, 200, 30);
+        lbl.add(email);
 
+        pwdLabel = new JLabel("Password");
+        pwdLabel.setBounds(200, 400, 120, 30);
+        lbl.add(pwdLabel);
 
-        description1 = new JLabel("12 questions worth 1 crore(in total) is available.");
-        description1.setBounds(230, 120, 800, 18);
-        description1.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        description1.setForeground(new Color(0, 0,255));
+        password = new JTextField("");
+        password.setBounds(350, 400, 200, 30);
+        lbl.add(password);
 
-        description2 = new JLabel("Three lifelines( 50 : 50, Double dip, swap ) is available for one time use only. ");
-        description2.setBounds(230, 200, 800, 18);
-        description2.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        description2.setForeground(new Color(0, 0,255));
+        confirmPasswordLabel = new JLabel("Confirm Password");
+        confirmPasswordLabel.setBounds(200, 450, 120, 30);
+        lbl.add(confirmPasswordLabel);
 
-        description3 = new JLabel("First four, second three and last five questions will be from easy, medium and hard section respectively.");
-        description3.setBounds(230, 280, 800, 18);
-        description3.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        description3.setForeground(new Color(0, 0,255));
+        confirmPassword = new JTextField("");
+        confirmPassword.setBounds(350, 450, 200, 30);
+        lbl.add(confirmPassword);
 
-        description4 = new JLabel("Money safe zone is on $10,000 and $3,20,000 only.");
-        description4.setBounds(230, 360, 800, 18);
-        description4.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        description4.setForeground(new Color(0, 0,255));
+        checkBox = new JCheckBox("Request for admin access.");
+        checkBox.setBounds(200, 500, 250, 30);
+        lbl.add(checkBox);
 
-        description5 = new JLabel("Timer will be stopped after lifeline is activated.");
-        description5.setBounds(230, 440, 800, 18);
-        description5.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        description5.setForeground(new Color(0, 0,255));
+        submit = new JButton("REGISTER");
+        submit.setBounds(250, 550, 100, 30);
+        submit.addActionListener(this);
+        lbl.add(submit);
 
-        description6 = new JLabel("Players' hand will not be empty incase of quit with some question's right answer.");
-        description6.setBounds(230, 520, 800, 18);
-        description6.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        description6.setForeground(new Color(0, 0,255));
-
-        
-
-       
-        
-        lbl.add(toplbl);
-        lbl.add(msglbl);
-        lbl.add(Instruction1);
-        lbl.add(Instruction2);
-        lbl.add(Instruction3);
-        lbl.add(Instruction4);
-        lbl.add(Instruction5);
-        lbl.add(Instruction6);
-        lbl.add(description1);
-        lbl.add(description2);
-        lbl.add(description3);
-        lbl.add(description4);
-        lbl.add(description5);
-        lbl.add(description6);
-        lbl.add(back);
+        cancel = new JButton("CANCEL");
+        cancel.setBounds(400, 550, 100, 30);
+        cancel.addActionListener(this);
+        lbl.add(cancel);
 
         f.add(lbl);
-        
-        back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
 
-              back.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    try {
-                        // this is for linking another file where should this label directs.
-                                // new SecondInterface();
-                    } catch (Exception e1) {
+    public void showRegister(){
+        register.setBackground(Color.green);
+        login.setBackground(Color.white);
+        submit.setText("REGISTER");
+
+        username.setVisible(true);
+        nameLabel.setVisible(true);
+        confirmPassword.setVisible(true);
+        confirmPasswordLabel.setVisible(true);
+        checkBox.setVisible(true);
+    }
+
+    public void showLogin(){
+        register.setBackground(Color.white);
+        login.setBackground(Color.green);
+        submit.setText("LOGIN");
         
-                        e1.printStackTrace();
+        username.setVisible(false);
+        nameLabel.setVisible(false);
+        confirmPassword.setVisible(false);
+        confirmPasswordLabel.setVisible(false);
+        checkBox.setVisible(false);
+    }
+
+    public void submitButtonClicked(){
+        String uname = username.getText();
+        String emailStr = email.getText();
+        String pass = password.getText();
+        String comPass = confirmPassword.getText();
+        String admin_stat = "no";
+        String logged_in_stat = "no";
+
+        if(checkBox.isSelected()){
+            admin_stat = "requested";
+        }
+
+
+
+        if(submit.getText().equals("LOGIN")){
+            // System.out.println("register button clicked");
+            try{
+                String query = "select * from login_details where email = '" + emailStr + "' and password = '" + pass + "'";
+
+                rst = stm.executeQuery(query);
+                if(rst.next()){
+                    // query = "update login_details set logged_in = 'yes' where email = '" + emailStr + "'";
+                    // stm.executeUpdate(query);
+                    if(rst.getString("admin_status").equals("accepted")){
+                        query = "update login_details set logged_in = 'yes' where email = '" + emailStr + "'";
+                        stm.executeUpdate(query);
+                        lbl.setVisible(false);
+                        new Question(f, stm);
+                    }else{
+                        query = "update login_details set logged_in = 'yes' where email = '" + emailStr + "'";
+                        stm.executeUpdate(query);
+                        lbl.setVisible(false);
+                        new FirstInterface(f, stm);
                     }
                 }
-            });
 
+                // System.out.println("success");
+                // System.out.println(max);
+            }catch(Exception e){
+                System.out.println("error: " + e.getMessage());
+                // System.out.println(e.getMessage());
+            }
+
+
+        }else if(submit.getText().equals("REGISTER")){
+            // System.out.println("login button clicked");
+            if(pass.equals(comPass)){
+                // System.out.println(uname + emailStr + pass + comPass + admin_stat + logged_in);
+                try{
+                    // stm = conn.createStatement();
+                    System.out.println("testing");
+                    String query = "INSERT INTO login_details(name, email, password, admin_status, logged_in) VALUES('"+uname+"','"+emailStr+"','"+pass+"','"+admin_stat+"','"+logged_in_stat+"')";
+                    System.out.println("testing 2");
+                    stm.executeUpdate(query);
+                    System.out.println("Inserted into table");
+                    username.setText("");
+                    email.setText("");
+                    password.setText("");
+                    confirmPassword.setText("");
+                    showLogin();
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void actionPerformed(ActionEvent ae){
+
+        if(ae.getSource().equals(login)){
+            showLogin();
+        }else if(ae.getSource().equals(register)){
+            showRegister();
+        }else if(ae.getSource().equals(submit)){
+            submitButtonClicked();
+        }else if(ae.getSource().equals(cancel)){
+            lbl.setVisible(false);
+            new FirstInterface(f, stm);
+        }
     }
         
         
-    public static void main(String[] args) {
-        new Register();
-    }
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     frame.setSize(1000,1000);
+    //     frame.setLocation(10,10);
+    //     frame.setLayout(null);
+    //     frame.setVisible(true);
+    //     frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
+    //     new Register(frame);
+    // }
 
 }

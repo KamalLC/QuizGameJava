@@ -12,7 +12,7 @@ import java.util.*;
 import java.lang.Math;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.sql.ResultSet; 
+import java.sql.ResultSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -1019,7 +1019,6 @@ void startTimer(int timeLimit){
                 lockBtn.setEnabled(false);
             }
             
-
             doubleFlag = 0;
 
         }
@@ -1120,12 +1119,12 @@ void startTimer(int timeLimit){
         System.out.println("called0");
         
         if(currentBtn.equals(quitBtn)){
-            System.out.println("called1");
+            // System.out.println("called1");
             gameOver();
-            System.out.println("called3");
+            // System.out.println("called3");
             gameLabel.setVisible(false);
             gameLabel.setText("");
-            System.out.println("called2");
+            // System.out.println("called2");
             new FirstInterface(gameFrame, stm); // TODO: UNCOMMENT THIS LATER
 
         }

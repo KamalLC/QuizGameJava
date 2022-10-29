@@ -3,6 +3,7 @@ import GamePack.*;
 import InstructionPack.*;
 import RulesPack.*;
 import QuestionPack.*;
+import RegisterPack.*;
 // import kamel.*;
 // import register.*;
 // import testFolder.*;
@@ -12,7 +13,8 @@ import java.awt.event.*;
 import java.awt.Font;
 
 import java.sql.Connection;
-import java.sql.Statement; 
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 
 import javax.swing.*;
@@ -21,6 +23,7 @@ public class FirstInterface implements ActionListener{
 	JFrame myFrame;
     Connection conn;
     Statement stm;
+    ResultSet rst;
     JButton b0, b1, b2, b3, b4, test;
     GridLayout gdl;
     public static FirstInterface fi;
@@ -105,13 +108,29 @@ public class FirstInterface implements ActionListener{
         frame.add(indexLabel);
 
     }
-    public void actionPerformed(ActionEvent e){
-        JButton eventSource = (JButton)e.getSource();
+    public void actionPerformed(ActionEvent ae){
+        JButton eventSource = (JButton)ae.getSource();
         
         if(eventSource == b2){
             
             indexLabel.setVisible(false);
-            new PlayGame(myFrame, stm);
+            try{
+                String query = "select * from login_details where logged_in = 'yes'";
+
+                rst = stm.executeQuery(query);
+                if(rst.next()){
+                    new PlayGame(myFrame, stm);
+                }else{
+                    new Register(myFrame, stm);
+                }
+
+                // System.out.println("success");
+                // System.out.println(max);
+            }catch(Exception e){
+                System.out.println("error: " + e.getMessage());
+                // System.out.println(e.getMessage());
+            }
+            
 
         }else if(eventSource == b3){
             
@@ -126,7 +145,8 @@ public class FirstInterface implements ActionListener{
         }
          else if(eventSource == b0){
             indexLabel.setVisible(false);
-             new Question(myFrame, stm);
+             // new Question(myFrame, stm);
+             new Register(myFrame, stm);
          }
         // else if(eventSource == test){
         //     new testFile("Register Section");

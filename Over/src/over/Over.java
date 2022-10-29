@@ -56,6 +56,9 @@ public class Over implements ActionListener{
                 System.out.println("Database connection success ...");
             }
 
+            String query = "update login_details set logged_in = 'no' where logged_in = 'yes'";
+            stm.executeUpdate(query);
+
             // System.out.println("Connected");
         }catch(Exception ex){
             System.out.println("Not connected! (Error Occured:)"+ex);
