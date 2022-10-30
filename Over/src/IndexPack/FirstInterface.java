@@ -1,5 +1,6 @@
 package IndexPack;
 import GamePack.*;
+import AccountPack.*;
 import InstructionPack.*;
 import RulesPack.*;
 import QuestionPack.*;
@@ -199,12 +200,12 @@ public class FirstInterface implements ActionListener{
         }else if(eventSource == instruction){
             
             indexLabel.setVisible(false);
-            new Instruction(myFrame, stm);
+            new MyAccount(myFrame, stm);
 
         }else if(eventSource == rules){
             
             indexLabel.setVisible(false);
-            new Question(myFrame, stm); // TODO: new Rules
+            new PlayGame(myFrame, stm); // TODO: new Rules
 
         }
         //  else if(eventSource == register){

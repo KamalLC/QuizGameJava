@@ -33,7 +33,7 @@ public class PlayGame implements ActionListener{
     
     JButton fiftyFiftyBtn, swapBtn, doubleDieBtn, option1, option2, option3, option4, lockBtn, nextQuestionBtn, quitBtn, playAgainBtn; 
     JLabel lbl1, lbl2, lbl3, l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l14, questionLbl, timerLabel;
-    JLabel gameLabel, gameOverLbl;
+    JLabel gameLabel, gameOverLbl, winLbl;
     JFrame gameFrame;
     Connection conn;
     Statement stm;
@@ -41,11 +41,12 @@ public class PlayGame implements ActionListener{
 
     JButton[] buttonList = new JButton[4];
     JLabel[] moneyLevel = new JLabel[12];
+    int[] winningPrices = {1000, 2000, 3000, 5000, 10000, 15000, 30000, 60000, 120000, 250000, 500000, 1000000};
     JButton choosedBtn, currentBtn;
 
     Timer timer;
 
-    String currentQuestion, optionA, optionB, optionC, optionD;
+    String currentQuestion, optionA, optionB, optionC, optionD, currentAnswer;
 
 
     String[][] easyQuestions = {
@@ -187,52 +188,52 @@ public class PlayGame implements ActionListener{
         l1.setForeground(Color.WHITE);
         
 
-        l2 = new JLabel("$3,000");
+        l2 = new JLabel("$2,000");
         l2.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l2.setBounds(0, 460, 300, 20);
         l2.setForeground(Color.WHITE);
 
-        l3 = new JLabel("$5,000");
+        l3 = new JLabel("$3,000");
         l3.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l3.setBounds(0, 420, 300, 20);
         l3.setForeground(Color.WHITE);
         
-        l4 = new JLabel("$10,000");
+        l4 = new JLabel("$5,000");
         l4.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l4.setBounds(0, 380, 300, 20);
         l4.setForeground(Color.WHITE);
 
-        l5 = new JLabel("$15,000");
+        l5 = new JLabel("$10,000");
         l5.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l5.setBounds(0, 340, 300, 20);
         l5.setForeground(Color.WHITE);
 
-        l6 = new JLabel("$30,000");
+        l6 = new JLabel("$15,000");
         l6.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l6.setBounds(0, 300, 300, 20);
         l6.setForeground(Color.WHITE);
 
-        l7 = new JLabel("$60,000");
+        l7 = new JLabel("$30,000");
         l7.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l7.setBounds(0, 260, 300, 20);
         l7.setForeground(Color.WHITE);
 
-        l8 = new JLabel("$120,000");
+        l8 = new JLabel("$60,000");
         l8.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l8.setBounds(0, 220, 300, 20);
         l8.setForeground(Color.WHITE);
 
-        l9 = new JLabel("$250,000");
+        l9 = new JLabel("$120,000");
         l9.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l9.setBounds(0, 180, 300, 20);
         l9.setForeground(Color.WHITE);
 
-        l10 = new JLabel("$500,000");
+        l10 = new JLabel("$250,000");
         l10.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l10.setBounds(0, 140, 300, 20);
         l10.setForeground(Color.WHITE);
 
-        l11 = new JLabel("$1,000,000");
+        l11 = new JLabel("$500,000");
         l11.setFont(new Font("Times New Roman", Font.BOLD, 25));
         // l11.setAlignmentX(CENTER_ALIGNMENT);
         // l11.setBounds(20, 100, 300, 20);
@@ -263,8 +264,21 @@ public class PlayGame implements ActionListener{
         timerLabel.setForeground(Color.white);
         timerLabel.setBounds(80,165, 80, 80);
 
+        winLbl = new JLabel();
+        // winLbl.setAlignmentY();
+        winLbl.setFont(new Font("Monospace", Font.BOLD, 25));
+        winLbl.setBackground(Color.BLUE);
+        winLbl.setVerticalAlignment(SwingConstants.CENTER);
+        winLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        winLbl.setOpaque(true);
+        winLbl.setForeground(Color.white);
+        winLbl.setBounds(80,165, 560, 80);
+
         // option buttons 
         gameLabel.add(timerLabel);
+        gameLabel.add(winLbl);
+        winLbl.setVisible(false);
+        // timerLabel.setVisible(false);
         gameLabel.add(questionLbl);
         
         option1 = new JButton();
@@ -957,9 +971,36 @@ void startTimer(int timeLimit){
         lockBtn.setVisible(true);
     }
 
+    public void updatePlayerDatabase(){
+        // to update played questions in database
+        int id_temp = 0;
+        String query;
+
+        // getting player's id
+        try{
+
+            query = "select * from login_details where logged_in = 'yes'";
+            rst = stm.executeQuery(query);
+            if(rst.next()){
+                id_temp = rst.getInt("id");
+            }
+        
+            // stm = conn.createStatement();
+            System.out.println("testing");
+            query = "INSERT INTO question_asked(user_id, level, question, answer) VALUES('"+id_temp+"','"+gameLevel+"','"+currentQuestion+"','"+correctAnswer+"')";
+            System.out.println("testing 2");
+            stm.executeUpdate(query);
+            System.out.println("Inserted into table");
+        }catch(Exception ex){
+            System.out.println("error in updatePlayerDatabase: " + ex.getMessage());
+        }
+
+    }
+
     public void lockButtonClicked(){
         disableLifeLines();
         choosedBtn.setEnabled(false);
+        updatePlayerDatabase();
 
         if(doubleFlag == 0){
             submitted = 1;
@@ -1121,11 +1162,24 @@ void startTimer(int timeLimit){
         if(currentBtn.equals(quitBtn)){
             // System.out.println("called1");
             gameOver();
-            // System.out.println("called3");
-            gameLabel.setVisible(false);
-            gameLabel.setText("");
+            // // System.out.println("called3");
+            // gameLabel.setVisible(false);
+            // gameLabel.setText("");
             // System.out.println("called2");
-            new FirstInterface(gameFrame, stm); // TODO: UNCOMMENT THIS LATER
+            // new FirstInterface(gameFrame, stm); // TODO: UNCOMMENT THIS LATER
+            Timer temp = new Timer();
+            temp.scheduleAtFixedRate(new TimerTask(){
+                int xyz = 0;
+                public void run(){
+                    xyz++;
+                    temp.cancel();
+                    gameLabel.setVisible(false);
+                    // gameLabel.setText("");
+                    new FirstInterface(gameFrame, stm);
+                    // winLbl.setText("time : " + xyz);                    
+                }
+
+            }, 2500, 2500);
 
         }
 
@@ -1169,6 +1223,18 @@ void startTimer(int timeLimit){
         quitBtn.setEnabled(true);
 
         decorateMoneyTree();
+        System.out.println("reached 1");
+
+        int winAmount = 0;
+        for(int i = 0; i < 12; i++){
+            if(moneyLevel[i].getBackground().equals(Color.decode("#FFCE45"))){
+                winAmount = winningPrices[i];
+            }
+        }
+        System.out.println("reached 2");
+        winLbl.setText("Congratulations! you won $" + winAmount);
+        winLbl.setVisible(true);
+        timerLabel.setVisible(false);
     }
 
     void playAgain(){
@@ -1207,6 +1273,7 @@ void startTimer(int timeLimit){
         nextQuestionBtn.setVisible(false);
         playAgainBtn.setVisible(false);
         playAgainBtn.setEnabled(false);
+        winLbl.setVisible(false);
 
         fiftyFiftyBtn.setEnabled(true);
         swapBtn.setEnabled(true);
@@ -1262,8 +1329,10 @@ void startTimer(int timeLimit){
 
             if(wrongAnswerFlag == 1){
                 if(gameLevel == 1){
-                    moneyLevel[0].setBackground(Color.decode("#FFCE45"));
-                    moneyLevel[0].setForeground(Color.decode("#000000"));
+                    if(questionCount != 1){
+                        moneyLevel[0].setBackground(Color.decode("#FFCE45"));
+                        moneyLevel[0].setForeground(Color.decode("#000000"));                        
+                    }
                 
                 }else if(gameLevel == 2){
                     moneyLevel[3].setBackground(Color.decode("#FFCE45"));

@@ -46,7 +46,7 @@ public class Over implements ActionListener{
         frame.setLocation(0, 0);
         frame.setLayout(null);
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver"); //driver registration
             //connection to database
