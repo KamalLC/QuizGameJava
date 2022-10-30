@@ -142,13 +142,24 @@ public class FirstInterface implements ActionListener{
         register.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
+            // new Question(myFrame, stm); // TODO: comment this later
               try {
                  
                 indexLabel.setVisible(false);
-                 
 
+                String q = "select * from login_details where logged_in = 'yes'";
+
+                rst = stm.executeQuery(q);
+                 
+                if(rst.next()){
+                    if(rst.getString("admin_status").equals("accepted")){
+                        new Question(myFrame, stm);
+                    }
+                }else{
+                    new Register(myFrame, stm);
+                }
                   // this is for linking another file where should this label directs.
-                  new Register(myFrame, stm);
+                  
               } catch (Exception e1) {
   
                   e1.printStackTrace();
@@ -193,7 +204,7 @@ public class FirstInterface implements ActionListener{
         }else if(eventSource == rules){
             
             indexLabel.setVisible(false);
-            new Rules(myFrame, stm);
+            new Question(myFrame, stm); // TODO: new Rules
 
         }
         //  else if(eventSource == register){

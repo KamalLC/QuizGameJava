@@ -10,25 +10,34 @@ import IndexPack.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 import java.sql.Connection;
-import java.sql.Statement; 
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 
 public class Question implements ActionListener {
     JFrame f;
     Connection conn;
     Statement stm;
-    JLabel lbl,toplbl, questionLbl, option1Lbl, option2Lbl, option3Lbl, option4Lbl, cor_ansLbl, levelLbl;
+    ResultSet rst;
+    JLabel sn, email, name;
+    JLabel lbl, admin_lbl,toplbl, questionLbl, option1Lbl, option2Lbl, option3Lbl, option4Lbl, cor_ansLbl, levelLbl;
     JTextField question, option1, option2, option3, option4, cor_ans, level;
-    JButton submit, back;
+    JButton submit, back, back_to_admin, accept, reject, admin_request;
     String[] levelOptions = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
     int[] levelOptionsInt = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     JComboBox<String> levelComboBox = new JComboBox<>(levelOptions);
     String[] optionOptions = {"Option1", "Option2", "Option3", "Option4"};
     JComboBox<String> optionComboBox = new JComboBox<>(optionOptions);
+    ArrayList<Integer> idList = new ArrayList<>();
+    ArrayList<JButton> acceptList = new ArrayList<>();
+    ArrayList<JButton> rejectList = new ArrayList<>();
+
+    int userId;
     
-    public Question(JFrame frame, Statement st){
+    public Question(JFrame frame, Statement st){ //, Statement st
         // System.out.println("reached instruction interface");
         f = frame;
         stm = st;
@@ -178,12 +187,158 @@ public class Question implements ActionListener {
         
         lbl.add(back);
         back.addActionListener(this);
+
+        admin_request = new JButton("ADMIN REQUEST");
+        admin_request.setBounds(650, 250, 150, 30);
+        admin_request.setForeground(Color.white);
+        admin_request.setBackground( new Color(205, 0, 0) );
+        lbl.add(admin_request);
+        admin_request.addActionListener(this);
         
         f.add(lbl);
+        // lbl.setVisible(false);
+
+        addAdminLabel();
+        admin_lbl.setVisible(false);
     }
+
+    public void addAdminLabel(){
+
+        admin_lbl = new JLabel();
+        admin_lbl.setOpaque(true);
+        admin_lbl.setBackground(Color.decode("#FFFFFF"));
+        admin_lbl.setBounds(0, 0, 1800, 1000);
+
+        back_to_admin = new JButton("BACK");
+        back_to_admin.setBounds(200, 100, 150, 30);
+        back_to_admin.setForeground(Color.white);
+        back_to_admin.setBackground( new Color(205, 0, 0) );
+        admin_lbl.add(back_to_admin);
+        back_to_admin.addActionListener(this);
+
+        sn = new JLabel("S.N.");
+        sn.setOpaque(true);
+        sn.setBackground(Color.decode("#FFFFFF"));
+        sn.setBounds(50, 200, 40, 30);
+        admin_lbl.add(sn);
+
+        name = new JLabel("NAME");
+        name.setOpaque(true);
+        name.setBackground(Color.decode("#FFFFFF"));
+        name.setBounds(100, 200, 240, 30);
+        admin_lbl.add(name);
+
+        email = new JLabel("EMAIL");
+        email.setOpaque(true);
+        email.setBackground(Color.decode("#FFFFFF"));
+        email.setBounds(350, 200, 240, 30);
+        admin_lbl.add(email);
+
+        showRequestList();
+
+        f.add(admin_lbl);
+    }
+    
+    public void showRequestList(){
+        int temp = 0;
+        String namestr, emailstr;
+        int idInt;
+        try{
+            String query = "select * from login_details where admin_status = 'requested'";
+
+            rst = stm.executeQuery(query);
+            while(rst.next()){
+                temp++;
+                JLabel snTemp, nameTemp, emailTemp;
+                JButton acc, rej;
+
+                idInt = rst.getInt("id");
+                namestr = rst.getString("name");
+                emailstr = rst.getString("email");
+
+                idList.add(idInt);
+
+                snTemp = new JLabel("" + temp);
+                snTemp.setOpaque(true);
+                snTemp.setBackground(Color.decode("#FFFFFF"));
+                snTemp.setBounds(50, 200 + 50 * temp, 40, 30);
+                admin_lbl.add(snTemp);
+
+                nameTemp = new JLabel(namestr);
+                nameTemp.setOpaque(true);
+                nameTemp.setBackground(Color.decode("#FFFFFF"));
+                nameTemp.setBounds(100, 200 + 50 * temp, 240, 30);
+                admin_lbl.add(nameTemp);
+
+                emailTemp = new JLabel(emailstr);
+                emailTemp.setOpaque(true);
+                emailTemp.setBackground(Color.decode("#FFFFFF"));
+                emailTemp.setBounds(350, 200 + 50 * temp, 240, 30);
+                admin_lbl.add(emailTemp);
+
+                acc = new JButton("ACCEPT");
+                acc.setBounds(600, 200 + 50 * temp, 140, 30);
+                acc.addActionListener(this);
+                admin_lbl.add(acc);
+                acceptList.add(acc);
+
+                rej = new JButton("REJECT");
+                rej.setBounds(750, 200 + 50 * temp, 150, 30);
+                rej.addActionListener(this);
+                admin_lbl.add(rej);
+                rejectList.add(rej);
+
+
+            }
+        }catch(Exception e){
+            System.out.println("Error in showRequestList: " + e.getMessage());
+        }
+    }
+
+    public void acceptButtonClicked(JButton b){
+        try{
+            userId = idList.get(acceptList.indexOf(b));
+            // System.out.println(userId);
+
+            String query = "update login_details set admin_status = 'accepted' where id = " + userId;
+            stm.executeUpdate(query);
+            b.setText("accepted");
+            b.setEnabled(false);
+            rejectList.get(acceptList.indexOf(b)).setVisible(false);
+
+            // System.out.println("Connected");
+        }catch(Exception ex){
+            System.out.println("Not connected! (Error Occured:)"+ex);
+        } 
+    }
+
+    public void rejectButtonClicked(JButton rb){
+        try{
+            userId = idList.get(rejectList.indexOf(rb));
+            // System.out.println(userId);
+
+            String query = "update login_details set admin_status = 'rejected' where id = " + userId;
+            stm.executeUpdate(query);
+            int temp = rejectList.indexOf(rb);
+            rb.setText("rejected");
+            rb.setEnabled(false);
+            // b.setBounds(600, 200 + 50 * (temp+1), 140, 30);
+            // acceptList.get(rejectList.indexOf(b)).setText("rejected");
+            acceptList.get(rejectList.indexOf(rb)).setVisible(false);
+            // rejectList.get(rejectList.indexOf(b)).setVisible(false);
+            // rejectList.get(rejectList.indexOf(b)).setVisible(false);
+
+            // System.out.println("Connected");
+        }catch(Exception ex){
+            System.out.println("Not connected! (Error Occured:)"+ex.getMessage());
+        } 
+    }
+
     public void actionPerformed(ActionEvent ae){
         // System.out.println("correct");
 //        System.out.println(ae.getSource());
+        JButton currBtn = (JButton)ae.getSource();
+
         if(ae.getSource().equals(submit)){
             String qsn, op1, op2, op3, op4, corr;
             int lev;
@@ -218,7 +373,26 @@ public class Question implements ActionListener {
             
         }else if(ae.getSource().equals(back)){
             lbl.setVisible(false);
+            admin_lbl.setVisible(false);
             new FirstInterface(f, stm);
+        }else if(ae.getSource().equals(back_to_admin)){
+            // System.out.println("back clicked");
+            admin_lbl.setVisible(false);
+            lbl.setVisible(true);
+        }else if(ae.getSource().equals(admin_request)){
+            // System.out.println("back clicked");
+            admin_lbl.setVisible(true);
+            lbl.setVisible(false);
+            // showRequestList();
+        }else if(currBtn.getText().equals("ACCEPT")){
+            acceptButtonClicked(currBtn);
+            // admin_lbl.setVisible(true);
+            // lbl.setVisible(false);
+            // currBtn.setVisible(false);
+        }else if(currBtn.getText().equals("REJECT")){
+            rejectButtonClicked(currBtn);
+            // admin_lbl.setVisible(true);
+            // currBtn.setVisible(false);
         }
         
 
@@ -233,14 +407,14 @@ public class Question implements ActionListener {
     //     new Instruction();
     // }
 
-// public static void main(String[] args) {
-//     JFrame frame = new JFrame();
-//     frame.setSize(1000,1000);
-//     frame.setLocation(10,10);
-//     frame.setLayout(null);
-//     frame.setVisible(true);
-//     frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
-//     new Instruction(frame);
-// }
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     frame.setSize(1000,1000);
+    //     frame.setLocation(10,10);
+    //     frame.setLayout(null);
+    //     frame.setVisible(true);
+    //     frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
+    //     new Question(frame);
+    // }
 
 }
