@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import IndexPack.*;
 import GamePack.*;
 import javax.swing.*;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,8 +17,19 @@ public class MyAccount implements ActionListener {
     Connection conn;
     Statement stm;
     ResultSet rst;
-    JLabel lbl, back, sn, levelLbl, questionLbl, answerLbl;
+    JLabel lbl, back, sn, levelLbl, questionLbl, answerLbl, prev, next;
     JScrollPane scrollPane;
+    ArrayList<String> questionList = new ArrayList<>();
+    ArrayList<String> answerList = new ArrayList<>();
+    ArrayList<Integer> levelList = new ArrayList<>();
+    int reached = 0, totalQuestions = 0;
+
+    JLabel[] snLabelList = new JLabel[10];
+    JLabel[] levelLabelList = new JLabel[10];
+    JLabel[] qsnLabelList = new JLabel[10];
+    JLabel[] ansLabelList = new JLabel[10];
+
+
     
     public MyAccount(JFrame frame, Statement st){
 
@@ -36,7 +48,7 @@ public class MyAccount implements ActionListener {
         lbl = new JLabel();
         lbl.setOpaque(true);
         lbl.setBackground(Color.decode("#FFFFFF"));
-        lbl.setBounds(0, 0, 1000, 1000);
+        lbl.setBounds(0, 0, 1800, 1000);
         // scrollPane.setPreferredSize(new Dimension(1000, 3000));
         // scrollPane = new JScrollPane(lbl);
         // setDimension();
@@ -46,10 +58,10 @@ public class MyAccount implements ActionListener {
         back.setForeground(new Color(205,0,0) );
         back.setOpaque(false);
         
-        back.setBounds(232, 600, 160, 40);
+        back.setBounds(232, 100, 160, 40);
         
         lbl.add(back);
-        
+
         back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
               back.addMouseListener(new MouseAdapter() {
@@ -94,6 +106,113 @@ public class MyAccount implements ActionListener {
         answerLbl.setBackground(Color.decode("#FFFFFF"));
         answerLbl.setBounds(600, 200, 150, 30);
         lbl.add(answerLbl);
+        // back = new JLabel("< - - HomePage ");
+        // back.setFont(new Font("MOnospace", Font.PLAIN, 18));
+        // back.setForeground(new Color(205,0,0) );
+        // back.setOpaque(false);
+        
+        // back.setBounds(232, 600, 160, 40);
+        
+        // lbl.add(back);
+
+        prev = new JLabel("<<-prev");
+        prev.setFont(new Font("MOnospace", Font.PLAIN, 18));
+        prev.setForeground(new Color(205,0,0) );
+        prev.setOpaque(false);
+        
+        prev.setBounds(232, 600, 160, 40);
+        
+        lbl.add(prev);
+
+
+        prev.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        prev.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+              try {
+                 
+                // lbl.setVisible(false);
+                // // this is for linking another file where should this label directs.
+                // new FirstInterface(f, stm);
+                reached = reached - 10;
+                reached = reached / 10 * 10;
+                fillLabels();
+
+                System.out.println("reached: " + reached + ", size: " + levelList.size());
+
+                if(reached >= levelList.size()){
+                    next.setVisible(false);
+                }else{
+                    next.setVisible(true);
+                }
+
+                if(reached - 10 > 0){
+                    prev.setVisible(true);
+                }else{
+                    prev.setVisible(false);
+                }
+               
+              } catch (Exception e1) {
+  
+                  e1.printStackTrace();
+              }
+          }
+      });
+
+        // prev.setVisible(false); //TODO: uncomment this later
+
+        //         back = new JLabel("< - - HomePage ");
+        // back.setFont(new Font("MOnospace", Font.PLAIN, 18));
+        // back.setForeground(new Color(205,0,0) );
+        // back.setOpaque(false);
+        
+        // back.setBounds(232, 600, 160, 40);
+        
+        // lbl.add(back);
+
+        next = new JLabel("next - - >");
+        next.setFont(new Font("MOnospace", Font.PLAIN, 18));
+        next.setForeground(new Color(205,0,0) );
+        next.setOpaque(false);
+        
+        next.setBounds(532, 600, 160, 40);
+        
+        lbl.add(next);
+
+
+        next.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        next.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+              try {
+                 
+                // lbl.setVisible(false);
+                // // this is for linking another file where should this label directs.
+                // new FirstInterface(f, stm);
+                fillLabels();
+                System.out.println("reached: " + reached + ", size: " + levelList.size());
+                if(reached >= levelList.size()){
+                    next.setVisible(false);
+                }else{
+                    next.setVisible(true);
+                }
+
+                if(reached - 10 > 0){
+                    prev.setVisible(true);
+                }else{
+                    prev.setVisible(false);
+                }
+               
+              } catch (Exception e1) {
+  
+                  e1.printStackTrace();
+              }
+          }
+      });
+
+
 
         
         int temp = 0, user_id = 1;
@@ -121,31 +240,35 @@ public class MyAccount implements ActionListener {
                 questionStr = rst.getString("question");
                 answerStr = rst.getString("answer");
 
-                // idList.add(idInt);
+                levelList.add(levelInt);
+                questionList.add(questionStr);
+                answerList.add(answerStr);
 
-                snTemp = new JLabel("" + temp);
-                snTemp.setOpaque(true);
-                snTemp.setBackground(Color.decode("#FFFFFF"));
-                snTemp.setBounds(50, 200 + 50 * temp, 40, 30);
-                lbl.add(snTemp);
+                // // idList.add(idInt);
 
-                levelTemp = new JLabel("" + levelInt);
-                levelTemp.setOpaque(true);
-                levelTemp.setBackground(Color.decode("#FFFFFF"));
-                levelTemp.setBounds(100, 200 + 50 * temp, 240, 30);
-                lbl.add(levelTemp);
+                // snTemp = new JLabel("" + temp);
+                // snTemp.setOpaque(true);
+                // snTemp.setBackground(Color.decode("#FFFFFF"));
+                // snTemp.setBounds(50, 200 + 50 * temp, 40, 30);
+                // lbl.add(snTemp);
 
-                questionTemp = new JLabel(questionStr);
-                questionTemp.setOpaque(true);
-                questionTemp.setBackground(Color.decode("#FFFFFF"));
-                questionTemp.setBounds(350, 200 + 50 * temp, 240, 30);
-                lbl.add(questionTemp);
+                // levelTemp = new JLabel("" + levelInt);
+                // levelTemp.setOpaque(true);
+                // levelTemp.setBackground(Color.decode("#FFFFFF"));
+                // levelTemp.setBounds(100, 200 + 50 * temp, 240, 30);
+                // lbl.add(levelTemp);
 
-                answerTemp = new JLabel(answerStr);
-                answerTemp.setOpaque(true);
-                answerTemp.setBackground(Color.decode("#FFFFFF"));
-                answerTemp.setBounds(600, 200 + 50 * temp, 240, 30);
-                lbl.add(answerTemp);
+                // questionTemp = new JLabel(questionStr);
+                // questionTemp.setOpaque(true);
+                // questionTemp.setBackground(Color.decode("#FFFFFF"));
+                // questionTemp.setBounds(350, 200 + 50 * temp, 240, 30);
+                // lbl.add(questionTemp);
+
+                // answerTemp = new JLabel(answerStr);
+                // answerTemp.setOpaque(true);
+                // answerTemp.setBackground(Color.decode("#FFFFFF"));
+                // answerTemp.setBounds(600, 200 + 50 * temp, 240, 30);
+                // lbl.add(answerTemp);
 
                 // acc = new JButton("ACCEPT");
                 // acc.setBounds(600, 200 + 50 * temp, 140, 30);
@@ -167,7 +290,89 @@ public class MyAccount implements ActionListener {
 
 
         f.add(lbl);
+
+        addQuestionLabels();
+        fillLabels();
+
+        if(reached >= levelList.size()){
+            next.setVisible(false);
+        }
     }
+
+    public void addQuestionLabels(){
+        JLabel snTemp, levelTemp, questionTemp, answerTemp;
+        JButton acc, rej;
+
+        String questionStr, answerStr;
+        String query;
+        int idInt, levelInt, temp = 0;
+
+        while(temp < 10){
+
+            snTemp = new JLabel("1");
+            snTemp.setOpaque(true);
+            snTemp.setBackground(Color.decode("#FFFFFF"));
+            snTemp.setBounds(50, 230 + 30 * temp, 40, 30);
+            lbl.add(snTemp);
+            snLabelList[temp] = snTemp;
+
+            levelTemp = new JLabel("1");
+            levelTemp.setOpaque(true);
+            levelTemp.setBackground(Color.decode("#FFFFFF"));
+            levelTemp.setBounds(100, 230 + 30 * temp, 240, 30);
+            lbl.add(levelTemp);
+            levelLabelList[temp] = levelTemp;
+
+            questionTemp = new JLabel("Which is the national bird of the United States of America?");
+            questionTemp.setOpaque(true);
+            questionTemp.setBackground(Color.decode("#FFFFFF"));
+            questionTemp.setBounds(350, 230 + 30 * temp, 240, 30);
+            lbl.add(questionTemp);
+            qsnLabelList[temp] = questionTemp;
+
+            answerTemp = new JLabel("Alexander Graham Bell");
+            answerTemp.setOpaque(true);
+            answerTemp.setBackground(Color.decode("#FFFFFF"));
+            answerTemp.setBounds(600, 230 + 30 * temp, 240, 30);
+            lbl.add(answerTemp);
+            ansLabelList[temp] = answerTemp;
+
+            temp++;
+        }
+
+    }
+
+    public void fillLabels(){
+        int temp = 0;
+        int flag = 0;
+
+        while(temp < 10){
+            snLabelList[temp].setText("" + (reached + 1));
+            levelLabelList[temp].setText("" + levelList.get(reached));
+            qsnLabelList[temp].setText(questionList.get(reached));
+            ansLabelList[temp].setText(answerList.get(reached));
+
+            if(reached + 1 == levelList.size()){
+                flag = 1;
+            }
+
+            if(flag == 1){
+                temp++;
+                while(temp < 10){
+                    snLabelList[temp].setText("");
+                    levelLabelList[temp].setText("");
+                    qsnLabelList[temp].setText("");
+                    ansLabelList[temp].setText("");
+                    temp++;
+                }
+            }
+
+            reached++;
+            temp++;
+        }
+    }
+
+
     public void actionPerformed(ActionEvent ae){
         // if(ae.getSource().equals(back)){
         //     lbl.setVisible(false);

@@ -205,7 +205,7 @@ public class FirstInterface implements ActionListener{
         }else if(eventSource == rules){
             
             indexLabel.setVisible(false);
-            new PlayGame(myFrame, stm); // TODO: new Rules
+            new Question(myFrame, stm); // TODO: new Rules
 
         }
         //  else if(eventSource == register){

@@ -397,35 +397,91 @@ public class Question implements ActionListener {
 
     public void addAdminLabel(){
 
+       
         admin_lbl = new JLabel();
         admin_lbl.setOpaque(true);
         admin_lbl.setBackground(Color.decode("#FFFFFF"));
         admin_lbl.setBounds(0, 0, 1800, 1000);
 
-        back_to_admin = new JButton("BACK");
-        back_to_admin.setBounds(200, 100, 150, 30);
-        back_to_admin.setForeground(Color.white);
-        back_to_admin.setBackground( new Color(205, 0, 0) );
-        admin_lbl.add(back_to_admin);
-        back_to_admin.addActionListener(this);
+        toplbl = new JLabel("ADMIN ACCESS REQUEST");
+        toplbl.setForeground(Color.WHITE);
+        toplbl.setBounds(0, 0, 1300,75);
+        toplbl.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        toplbl.setBackground(new Color(153,0,0) );
+        toplbl.setOpaque(true);
+        toplbl.setHorizontalAlignment(SwingConstants.CENTER);
+        toplbl.setVerticalAlignment(SwingConstants.CENTER);
+        admin_lbl.add(toplbl);
+
+        // back_to_admin = new JButton("BACK");
+        // back_to_admin.setBounds(200, 600, 200, 40);
+        // back_to_admin.setForeground(Color.white);
+        // back_to_admin.setBackground( new Color(205, 0, 0) );
+        // admin_lbl.add(back_to_admin);
+        // back_to_admin.addActionListener(this);
+
+        back = new JLabel("< - - BACK ");
+        back.setFont(new Font("MOnospace", Font.PLAIN, 18));
+        back.setForeground(new Color(205,0,0) );
+        back.setOpaque(false);
+        
+        back.setBounds(80, 600, 160, 40);
+        
+        admin_lbl.add(back);
 
         sn = new JLabel("S.N.");
         sn.setOpaque(true);
-        sn.setBackground(Color.decode("#FFFFFF"));
-        sn.setBounds(50, 200, 40, 30);
+        // sn.setBackground(Color.decode("#FFFFFF"));
+        sn.setForeground(Color.WHITE);
+        sn.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        sn.setHorizontalAlignment(SwingConstants.CENTER);
+        sn.setVerticalAlignment(SwingConstants.CENTER);
+        sn.setBackground(new Color(205,0,0) );
+        sn.setOpaque(true);
+        sn.setBounds(80, 150, 80, 40);
         admin_lbl.add(sn);
 
         name = new JLabel("NAME");
+        name.setForeground(Color.WHITE);
+        name.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        name.setHorizontalAlignment(SwingConstants.CENTER);
+        name.setVerticalAlignment(SwingConstants.CENTER);
+        name.setBackground(new Color(205,0,0) );
         name.setOpaque(true);
-        name.setBackground(Color.decode("#FFFFFF"));
-        name.setBounds(100, 200, 240, 30);
+        name.setBounds(160, 150, 240, 40);
         admin_lbl.add(name);
 
         email = new JLabel("EMAIL");
+        email.setForeground(Color.WHITE);
+        email.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        email.setHorizontalAlignment(SwingConstants.CENTER);
+        email.setVerticalAlignment(SwingConstants.CENTER);
+        email.setBackground(new Color(205,0,0) );
         email.setOpaque(true);
-        email.setBackground(Color.decode("#FFFFFF"));
-        email.setBounds(350, 200, 240, 30);
+        email.setBounds(400, 150, 240, 40);
         admin_lbl.add(email);
+
+        back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        back.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+              try {
+                 
+                // lbl.setVisible(false);
+                // // this is for linking another file where should this label directs.
+                // new FirstInterface(f, stm);
+
+                lbl.setVisible(false);
+                admin_lbl.setVisible(false);
+                new Question(f, stm);
+               
+              } catch (Exception e1) {
+  
+                  e1.printStackTrace();
+              }
+          }
+      });
 
         showRequestList();
 
@@ -454,29 +510,29 @@ public class Question implements ActionListener {
                 snTemp = new JLabel("" + temp);
                 snTemp.setOpaque(true);
                 snTemp.setBackground(Color.decode("#FFFFFF"));
-                snTemp.setBounds(50, 200 + 50 * temp, 40, 30);
+                snTemp.setBounds(80, 150 + 50 * temp, 80, 30);
                 admin_lbl.add(snTemp);
 
                 nameTemp = new JLabel(namestr);
                 nameTemp.setOpaque(true);
                 nameTemp.setBackground(Color.decode("#FFFFFF"));
-                nameTemp.setBounds(100, 200 + 50 * temp, 240, 30);
+                nameTemp.setBounds(160, 150 + 50 * temp, 240, 30); //(160, 150, 240, 40)
                 admin_lbl.add(nameTemp);
 
                 emailTemp = new JLabel(emailstr);
                 emailTemp.setOpaque(true);
                 emailTemp.setBackground(Color.decode("#FFFFFF"));
-                emailTemp.setBounds(350, 200 + 50 * temp, 240, 30);
+                emailTemp.setBounds(400, 150 + 50 * temp, 240, 30);  //(400, 150, 240, 40)
                 admin_lbl.add(emailTemp);
 
                 acc = new JButton("ACCEPT");
-                acc.setBounds(600, 200 + 50 * temp, 140, 30);
+                acc.setBounds(650, 150 + 50 * temp, 140, 30);
                 acc.addActionListener(this);
                 admin_lbl.add(acc);
                 acceptList.add(acc);
 
                 rej = new JButton("REJECT");
-                rej.setBounds(750, 200 + 50 * temp, 150, 30);
+                rej.setBounds(800, 150 + 50 * temp, 150, 30);
                 rej.addActionListener(this);
                 admin_lbl.add(rej);
                 rejectList.add(rej);
@@ -564,10 +620,10 @@ public class Question implements ActionListener {
                 System.out.println(e.getMessage());
             }
             
-        }else if(ae.getSource().equals(back)){
-            lbl.setVisible(false);
-            admin_lbl.setVisible(false);
-            new FirstInterface(f, stm);
+        // }else if(ae.getSource().equals(back)){
+        //     lbl.setVisible(false);
+        //     admin_lbl.setVisible(false);
+        //     new FirstInterface(f, stm);
         }else if(ae.getSource().equals(back_to_admin)){
             // System.out.println("back clicked");
             admin_lbl.setVisible(false);

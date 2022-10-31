@@ -14,7 +14,7 @@ public class Register implements ActionListener {
     JFrame f;
     Statement stm;
     ResultSet rst, rst2;
-    JLabel lbl, nameLabel, emailLabel, pwdLabel, confirmPasswordLabel;
+    JLabel lbl, toplbl, nameLabel, emailLabel, pwdLabel, confirmPasswordLabel;
     JButton login, register, submit, cancel;
     JTextField username, email, password, confirmPassword;
     JCheckBox checkBox;
@@ -27,63 +27,171 @@ public class Register implements ActionListener {
         lbl = new JLabel();
         lbl.setOpaque(true);
         lbl.setBackground(Color.decode("#FFFFFF"));
-        lbl.setBounds(0, 0, 1000, 1000);
+        lbl.setBounds(0, 0, 1800, 1000);
 
-        login = new JButton("LOGIN");
-        login.setBounds(400, 250, 100, 30);
-        login.addActionListener(this);
-        lbl.add(login);
-        login.setBackground(Color.white);
+        
+        toplbl = new JLabel("REGISTER  AND  LOGIN  SECTION");
+        toplbl.setForeground(Color.WHITE);
+        toplbl.setBounds(0, 0, 1300,75);
+        toplbl.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        toplbl.setBackground(new Color(153,0,0) );
+        toplbl.setOpaque(true);
+        toplbl.setHorizontalAlignment(SwingConstants.CENTER);
+        toplbl.setVerticalAlignment(SwingConstants.CENTER);
+        lbl.add(toplbl);
 
         register = new JButton("REGISTER");
-        register.setBounds(250, 250, 100, 30);
+        // register.setBounds(830, 230, 200, 50);
+        register.setBounds(830, 90, 200, 50);
+        register.setForeground(Color.BLUE);
+        register.setToolTipText("Click to Register");
+        // register.setBackground( new Color(205, 0, 0) );
         register.addActionListener(this);
         lbl.add(register);
         register.setBackground(Color.green);
 
-        nameLabel = new JLabel("Full Name");
-        nameLabel.setBounds(200, 300, 120, 30);
+        // register = new JButton(" REGISTER ");
+        // register.setBounds(1100, 85, 150, 40);
+        // register.setForeground(Color.white);
+        // register.setBackground( new Color(205, 0, 0) );
+        // register.add(register);
+        // login.addActionListener(this);
+
+        // login = new JButton("LOGIN");
+        // login.setBounds(400, 250, 100, 30);
+        // login.addActionListener(this);
+        // lbl.add(login);
+        // login.setBackground(Color.white);
+
+        login = new JButton(" LOGIN ");
+        // login.setBounds(1050, 230, 200, 50);
+        login.setBounds(1050, 90, 200, 50);
+        login.setForeground(Color.BLUE);
+        login.setBackground( new Color(205, 0, 0) );
+        login.setToolTipText("Click to login");
+        lbl.add(login);
+        login.addActionListener(this);
+
+        // nameLabel = new JLabel("Full Name");
+        // nameLabel.setBounds(200, 300, 120, 30);
+        // lbl.add(nameLabel);
+
+        nameLabel = new JLabel("Name : ");
+        nameLabel.setOpaque(true);
+        nameLabel.setBounds(30, 230, 200, 40);
+        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        nameLabel.setVerticalAlignment(SwingConstants.CENTER);
+        nameLabel.setBackground(new Color(205,0,0) );
         lbl.add(nameLabel);
 
-        username = new JTextField("");
-        username.setBounds(350, 300, 200, 30);
+        username = new JTextField();
+        username.setBounds(300, 230, 500, 40);
+        username.setBackground( new Color(204, 204, 204) );
         lbl.add(username);
 
-        emailLabel = new JLabel("Email");
-        emailLabel.setBounds(200, 350, 120, 30);
+        
+
+        // emailLabel = new JLabel("Email");
+        // emailLabel.setBounds(200, 350, 120, 30);
+        // lbl.add(emailLabel);
+
+        emailLabel = new JLabel("Email : ");
+        emailLabel.setOpaque(true);
+        emailLabel.setBounds(30, 300, 200, 40);
+        emailLabel.setForeground(Color.WHITE);
+        emailLabel.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        emailLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        emailLabel.setVerticalAlignment(SwingConstants.CENTER);
+        emailLabel.setBackground(new Color(205,0,0) );
         lbl.add(emailLabel);
 
-        email = new JTextField("");
-        email.setBounds(350, 350, 200, 30);
+        // email = new JTextField("");
+        // email.setBounds(350, 350, 200, 30);
+        // lbl.add(email);
+
+        email = new JTextField();
+        email.setBounds(300, 300, 500, 40);
+        email.setBackground( new Color(204, 204, 204) );
         lbl.add(email);
 
-        pwdLabel = new JLabel("Password");
-        pwdLabel.setBounds(200, 400, 120, 30);
-        lbl.add(pwdLabel);
+        // pwdLabel = new JLabel("Password");
+        // pwdLabel.setBounds(200, 400, 120, 30);
+        // lbl.add(pwdLabel);
 
-        password = new JTextField("");
-        password.setBounds(350, 400, 200, 30);
-        lbl.add(password);
+        pwdLabel = new JLabel("Password : ");
+        pwdLabel .setOpaque(true);
+        pwdLabel .setBounds(30, 370, 200, 40);
+        pwdLabel .setForeground(Color.WHITE);
+        pwdLabel .setFont(new Font("MOnospace", Font.PLAIN, 15));
+        pwdLabel .setHorizontalAlignment(SwingConstants.CENTER);
+        pwdLabel .setVerticalAlignment(SwingConstants.CENTER);
+        pwdLabel .setBackground(new Color(205,0,0) );
+        lbl.add( pwdLabel );
 
-        confirmPasswordLabel = new JLabel("Confirm Password");
-        confirmPasswordLabel.setBounds(200, 450, 120, 30);
-        lbl.add(confirmPasswordLabel);
+        // password = new JTextField("");
+        // password.setBounds(350, 400, 200, 30);
+        // lbl.add(password);
 
-        confirmPassword = new JTextField("");
-        confirmPassword.setBounds(350, 450, 200, 30);
-        lbl.add(confirmPassword);
+        password = new JTextField();
+        password .setBounds(300, 370, 500, 40);
+        password .setBackground( new Color(204, 204, 204) );
+        lbl.add(password );
 
-        checkBox = new JCheckBox("Request for admin access.");
-        checkBox.setBounds(200, 500, 250, 30);
+        // confirmPasswordLabel = new JLabel("Confirm Password");
+        // confirmPasswordLabel.setBounds(200, 450, 120, 30);
+        // lbl.add(confirmPasswordLabel);
+
+        confirmPasswordLabel = new JLabel("Confirm password :");
+        confirmPasswordLabel.setOpaque(true);
+        confirmPasswordLabel.setBounds(30, 440, 200, 40);
+        confirmPasswordLabel.setForeground(Color.WHITE);
+        confirmPasswordLabel.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        confirmPasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        confirmPasswordLabel.setVerticalAlignment(SwingConstants.CENTER);
+        confirmPasswordLabel.setBackground(new Color(205,0,0) );
+        lbl.add( confirmPasswordLabel);
+
+        // confirmPassword = new JTextField("");
+        // confirmPassword.setBounds(350, 450, 200, 30);
+        // lbl.add(confirmPassword);
+
+        confirmPassword = new JTextField();
+        confirmPassword.setBounds(300, 440, 500, 40);
+        confirmPassword.setBackground( new Color(204, 204, 204) );
+        lbl.add(confirmPassword );
+
+        checkBox = new JCheckBox("   Request  for  admin  access.   ");
+        checkBox.setBounds(300, 520, 290, 40);
+        checkBox.setFont(new Font("MOnospace", Font.BOLD, 15));
         lbl.add(checkBox);
 
+        // submit = new JButton("REGISTER");
+        // submit.setBounds(250, 550, 100, 30);
+        // submit.addActionListener(this);
+        
+
         submit = new JButton("REGISTER");
-        submit.setBounds(250, 550, 100, 30);
-        submit.addActionListener(this);
+        // submit.setBounds(830, 440, 200, 50);
+        submit.setBounds(830, 570, 200, 50);
+        submit.setForeground(Color.WHITE);
+        submit.setBackground( new Color(205, 0, 0) );
+        // register.setToolTipText("Click to Register");
         lbl.add(submit);
+        submit.addActionListener(this);
+
+        // cancel = new JButton("CANCEL");
+        // cancel.setBounds(400, 550, 100, 30);
+        // cancel.addActionListener(this);
+        // lbl.add(cancel);
 
         cancel = new JButton("CANCEL");
-        cancel.setBounds(400, 550, 100, 30);
+        // cancel.setBounds(1050, 440, 200, 50);
+        cancel.setBounds(1050, 570, 200, 50);
+        cancel.setForeground(Color.WHITE);
+        cancel.setBackground( new Color(205, 0, 0) );
+        cancel.setToolTipText("Click to Cancel");
         cancel.addActionListener(this);
         lbl.add(cancel);
 
