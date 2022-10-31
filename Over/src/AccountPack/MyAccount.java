@@ -11,7 +11,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet; 
 
-public class MyAccount {
+public class MyAccount implements ActionListener {
     JFrame f;
     Connection conn;
     Statement stm;
@@ -49,6 +49,26 @@ public class MyAccount {
         back.setBounds(232, 600, 160, 40);
         
         lbl.add(back);
+        
+        back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+              back.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    try {
+                        System.out.println("inst quit");
+                        lbl.setVisible(false);
+                        lbl.setText("");
+                        System.out.println("inst quit2");
+
+                        // this is for linking another file where should this label directs.
+                        new FirstInterface(f, stm);
+                    } catch (Exception e1) {
+        
+                        e1.printStackTrace();
+                    }
+                }
+            });
 
 
         sn = new JLabel("S.N.");
@@ -147,6 +167,13 @@ public class MyAccount {
 
 
         f.add(lbl);
+    }
+    public void actionPerformed(ActionEvent ae){
+        // if(ae.getSource().equals(back)){
+        //     lbl.setVisible(false);
+        //     admin_lbl.setVisible(false);
+        //     new FirstInterface(f, stm);
+        // }
     }
 
     public void setDimension(){
