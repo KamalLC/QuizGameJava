@@ -1,4 +1,4 @@
-package AccountPack;
+package HistoryPack;
 
 import java.awt.Dimension;
 import IndexPack.*;
@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet; 
 
-public class MyAccount implements ActionListener {
+public class MyHistory implements ActionListener {
     JFrame f;
     Connection conn;
     Statement stm;
@@ -31,7 +31,7 @@ public class MyAccount implements ActionListener {
 
 
     
-    public MyAccount(JFrame frame, Statement st){
+    public MyHistory(JFrame frame, Statement st){
 
         f = frame;
         stm = st;
