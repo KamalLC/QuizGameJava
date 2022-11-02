@@ -110,7 +110,7 @@ public class PlayGame implements ActionListener{
     };
 
 
-    int i, questionCount = 0, winPoint, questionPoint, submitted=0, player_id;
+    int i, questionCount = 0, winPoint, questionPoint, submitted=0, player_id, logged_in_flag = 0;
     int questionIndex = 0, gameLevel = 0, swapFlag = 0, swapFlagUsed = 0, doubleFlag = 0, fiftyFiftyFlagUsed = 0, doubleFlagUsed = 0;
     int wrongAnswerFlag = 0, quitFlag = 0;
     String correctAnswer;
@@ -140,6 +140,7 @@ public class PlayGame implements ActionListener{
         gameFrame = frame;
         stm = st;
         topLeftPanel= new JPanel();
+        checkLoggedIn();
 
         // System.out.println("Reached PlayGame");
         // frame.setLayout(null);
@@ -1067,31 +1068,52 @@ void startTimer(int timeLimit){
         lockBtn.setVisible(true);
     }
 
-    public void updatePlayerDatabase(){
-        // to update played questions in database
-        int id_temp = 0;
+    public void checkLoggedIn(){
         String query;
-
-        // getting player's id
         try{
 
             query = "select * from login_details where logged_in = 'yes'";
             rst = stm.executeQuery(query);
             if(rst.next()){
-                id_temp = rst.getInt("id");
-                player_id = id_temp;
+                logged_in_flag = 1;
+                player_id = rst.getInt("id");
+                System.out.println("logged in: " + logged_in_flag + " player_id: " + player_id);
             }
         
-            // stm = conn.createStatement();
-            // System.out.println("testing");
-            query = "INSERT INTO question_asked(user_id, level, question, answer) VALUES('"+id_temp+"','"+gameLevel+"','"+currentQuestion+"','"+correctAnswer+"')";
-            // System.out.println("testing 2");
-            stm.executeUpdate(query);
-            // System.out.println("Inserted into table");
         }catch(Exception ex){
             System.out.println("error in updatePlayerDatabase: " + ex.getMessage());
         }
+    }
 
+    public void updatePlayerDatabase(){
+        // to update played questions in database
+        int id_temp = 0;
+        String query;
+
+        System.out.println("gameLevel from updatePlayerDatabase: " + (questionCount));
+
+        // getting player's id
+        if(logged_in_flag == 1){
+            System.out.println("from updatePlayerDatabase() logged_in_flag: " + logged_in_flag);
+            try{
+
+                query = "select * from login_details where logged_in = 'yes'";
+                rst = stm.executeQuery(query);
+                if(rst.next()){
+                    id_temp = rst.getInt("id");
+                    player_id = id_temp;
+                }
+            
+                // stm = conn.createStatement();
+                // System.out.println("testing");
+                query = "INSERT INTO question_asked(user_id, level, question, answer) VALUES('"+id_temp+"','"+questionCount+"','"+currentQuestion+"','"+correctAnswer+"')";
+                // System.out.println("testing 2");
+                stm.executeUpdate(query);
+                // System.out.println("Inserted into table");
+            }catch(Exception ex){
+                System.out.println("error in updatePlayerDatabase: " + ex.getMessage());
+            }
+        }
     }
 
     public void lockButtonClicked(){
@@ -1181,7 +1203,7 @@ void startTimer(int timeLimit){
         // questionIndex++;
         // System.out.println(questionIndex);
         // System.out.println(questions[questionIndex][0]);
-        System.out.println("quit flag: " + quitFlag + ", submitted = " + submitted + "level: " + gameLevel + "questionCount: " + questionCount);
+        System.out.println("quit flag: " + quitFlag + ", submitted = " + submitted + "gameLevel: " + gameLevel + "questionCount: " + questionCount);
         startGame();
     }
 
@@ -1359,22 +1381,24 @@ void startTimer(int timeLimit){
             
         }
 
-        try{
-            // userId = idList.get(acceptList.indexOf(b));
-            // System.out.println(userId);
+        if(logged_in_flag == 1){
 
-            long milli = System.currentTimeMillis();
-            Date date=new java.sql.Date(milli);
-            Time time = new java.sql.Time(milli); 
+            try{
+                // userId = idList.get(acceptList.indexOf(b));
+                // System.out.println(userId);
 
-            String query = "insert into win_history(user_id, date, time, prize_won) values('"+player_id+"','"+date+"','"+time+"','"+winAmount+"')";
-            stm.executeUpdate(query);
+                long milli = System.currentTimeMillis();
+                Date date=new java.sql.Date(milli);
+                Time time = new java.sql.Time(milli); 
 
-            // System.out.println("Connected");
-        }catch(Exception ex){
-            System.out.println("(Error Occured while storing win prize:)"+ex.getMessage());
-        } 
+                String query = "insert into win_history(user_id, date, time, prize_won) values('"+player_id+"','"+date+"','"+time+"','"+winAmount+"')";
+                stm.executeUpdate(query);
 
+                // System.out.println("Connected");
+            }catch(Exception ex){
+                System.out.println("(Error Occured while storing win prize:)"+ex.getMessage());
+            } 
+        }
 
         // System.out.println("reached 2");
         winLbl.setText("Congratulation ! you won $" + winAmount);

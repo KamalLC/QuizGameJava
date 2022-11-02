@@ -32,10 +32,11 @@ public class FirstInterface implements ActionListener{
     Statement stm;
     ResultSet rst;
     JButton rules, play, instruction, exit, test;
-    JLabel register, QuestionAskedHistory, LeaderBoard, History;
+    JLabel register, QuestionAskedHistory, LeaderBoard, History, adminTool;
     GridLayout gdl;
     public static FirstInterface fi;
     JLabel lbl, indexLabel;
+    int logged_in_flag = 0, player_id, admin_flag = 0;
 
     /**
      * @param FrameTitle
@@ -46,7 +47,9 @@ public class FirstInterface implements ActionListener{
         myFrame = frame;
         stm = st;
 
-        System.out.println("reached FirstInterface");
+        checkLoggedIn();
+
+        // System.out.println("reached FirstInterface");
         // frame.setSize(1000,1000);
         // frame.setLocation(10,10);
         // frame.setLayout(null);
@@ -82,18 +85,25 @@ public class FirstInterface implements ActionListener{
         
         // indexLabel.add(register);
 
-        register = new JLabel("Register");
+        adminTool = new JLabel("Admin Tool");
+        adminTool.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        adminTool.setForeground(Color.BLUE);
+        adminTool.setOpaque(false);
+        adminTool.setBounds(450, 100, 100, 25);
+        indexLabel.add(adminTool);
+
+        register = new JLabel("Register/Login");
         register.setFont(new Font("MOnospace", Font.PLAIN, 20));
         register.setForeground(Color.BLUE);
         register.setOpaque(false);
-        register.setBounds(700, 100, 100, 25);
+        register.setBounds(550, 100, 200, 25);
         indexLabel.add(register);
 
-        History = new JLabel("History");
+        History = new JLabel("My Game History");
         History.setFont(new Font("MOnospace", Font.PLAIN, 20));
         History.setForeground(Color.BLUE);
         History.setOpaque(false);
-        History.setBounds(815, 100, 100, 25);
+        History.setBounds(755, 100, 240, 25);
         indexLabel.add(History);
 
         QuestionAskedHistory = new JLabel("Question Asked");
@@ -162,25 +172,50 @@ public class FirstInterface implements ActionListener{
         exit.addActionListener(this);
         test.addActionListener(this);
 
+
+      adminTool.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+      adminTool.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            try {
+                
+                indexLabel.setVisible(false);
+                // this is for linking another file where should this label directs.
+                new Question(myFrame, stm);
+            } catch (Exception e1) {
+
+                e1.printStackTrace();
+            }
+        }
+    });
+
+
         register.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         register.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
-            new Question(myFrame, stm); // TODO: comment this later
+            // new Question(myFrame, stm); // TODO: comment this later
               try {
                  
-                indexLabel.setVisible(false);
+                // indexLabel.setVisible(false);
 
                 String q = "select * from login_details where logged_in = 'yes'";
 
                 rst = stm.executeQuery(q);
                  
                 if(rst.next()){
-                    if(rst.getString("admin_status").equals("accepted")){
-                        indexLabel.setVisible(false);
-                        new Question(myFrame, stm);
-                    }
+                    // if(rst.getString("admin_status").equals("accepted")){
+                    //     indexLabel.setVisible(false);
+                    //     new Question(myFrame, stm);
+                    // }else{
+                        q = "update login_details set logged_in = 'no' where logged_in = 'yes'";
+                        stm.executeUpdate(q);
+                        logged_in_flag = 0;
+                        changeVisibility();
+                        register.setText("Register/Login");
+                    // }
                 }else{
                     indexLabel.setVisible(false);
                     new Register(myFrame, stm);
@@ -203,7 +238,7 @@ public class FirstInterface implements ActionListener{
                 
                 indexLabel.setVisible(false);
                 // this is for linking another file where should this label directs.
-                new MyAccount(myFrame, stm);
+                new MyHistory(myFrame, stm);
             } catch (Exception e1) {
 
                 e1.printStackTrace();
@@ -220,7 +255,7 @@ public class FirstInterface implements ActionListener{
                 
                 indexLabel.setVisible(false);
                 // this is for linking another file where should this label directs.
-                new MyHistory(myFrame, stm);
+                new MyAccount(myFrame, stm);
             } catch (Exception e1) {
 
                 e1.printStackTrace();
@@ -252,7 +287,8 @@ public class FirstInterface implements ActionListener{
         /**
          * 
          */
-     
+     changeVisibility();
+
     }
     public void close(){
         // WindowEvent closeWindow = new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING);
@@ -260,6 +296,42 @@ public class FirstInterface implements ActionListener{
         myFrame.dispose();
     }
 
+    public void changeVisibility(){
+        if(logged_in_flag == 0){
+            QuestionAskedHistory.setVisible(false);
+            History.setVisible(false);
+            adminTool.setVisible(false);
+         }else{
+            if(admin_flag == 1){      
+                // register.setText("Admin Tool");
+                adminTool.setVisible(true);
+            }else{
+                register.setText("Logout");
+                adminTool.setVisible(false);
+            }
+         }
+    }
+
+
+    public void checkLoggedIn(){
+        String query, lgIn;
+        try{
+
+            query = "select * from login_details where logged_in = 'yes'";
+            rst = stm.executeQuery(query);
+            if(rst.next()){
+                logged_in_flag = 1;
+                player_id = rst.getInt("id");
+                lgIn = rst.getString("admin_status");
+                if(lgIn.equals("accepted")){
+                    admin_flag = 1;
+                }
+            }
+        
+        }catch(Exception ex){
+            System.out.println("error in updatePlayerDatabase: " + ex.getMessage());
+        }
+    }
     
 
     public void actionPerformed(ActionEvent ae){
@@ -268,22 +340,23 @@ public class FirstInterface implements ActionListener{
         if(eventSource == play){
             
             indexLabel.setVisible(false);
-            try{
-                String query = "select * from login_details where logged_in = 'yes'";
+            new PlayGame(myFrame, stm);
+            // try{
+            //     String query = "select * from login_details where logged_in = 'yes'";
 
-                rst = stm.executeQuery(query);
-                if(rst.next()){
-                    new PlayGame(myFrame, stm);
-                }else{
-                    new Register(myFrame, stm);
-                }
+            //     rst = stm.executeQuery(query);
+            //     if(rst.next()){
+            //         new PlayGame(myFrame, stm);
+            //     }else{
+            //         new Register(myFrame, stm);
+            //     }
 
-                // System.out.println("success");
-                // System.out.println(max);
-            }catch(Exception e){
-                System.out.println("error: " + e.getMessage());
-                // System.out.println(e.getMessage());
-            }
+            //     // System.out.println("success");
+            //     // System.out.println(max);
+            // }catch(Exception e){
+            //     System.out.println("error: " + e.getMessage());
+            //     // System.out.println(e.getMessage());
+            // }
 
         }else if(eventSource == instruction){
             

@@ -3,6 +3,7 @@ package HistoryPack;
 import java.awt.Dimension;
 import IndexPack.*;
 import GamePack.*;
+import AccountPack.*;
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
@@ -11,23 +12,25 @@ import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet; 
+import java.sql.Date;
+import java.sql.Time;
 
 public class MyHistory implements ActionListener {
     JFrame f;
     Connection conn;
     Statement stm;
     ResultSet rst;
-    JLabel lbl, back, sn, levelLbl, questionLbl, answerLbl, prev, next, toplbl;
+    JLabel lbl, back, sn, dateLbl, timeLbl, prizeLbl, prev, next, toplbl, homePage;
     JScrollPane scrollPane;
-    ArrayList<String> questionList = new ArrayList<>();
-    ArrayList<String> answerList = new ArrayList<>();
-    ArrayList<Integer> levelList = new ArrayList<>();
+    ArrayList<Time> timeListList = new ArrayList<>();
+    ArrayList<Integer> prizeList = new ArrayList<>();
+    ArrayList<Date> dateList = new ArrayList<>();
     int reached = 0, totalQuestions = 0;
 
     JLabel[] snLabelList = new JLabel[10];
-    JLabel[] levelLabelList = new JLabel[10];
-    JLabel[] qsnLabelList = new JLabel[10];
-    JLabel[] ansLabelList = new JLabel[10];
+    JLabel[] dateLabelList = new JLabel[10];
+    JLabel[] timeLabelList = new JLabel[10];
+    JLabel[] prizeLabelList = new JLabel[10];
 
 
     
@@ -53,7 +56,7 @@ public class MyHistory implements ActionListener {
         // scrollPane = new JScrollPane(lbl);
         // setDimension();
 
-        toplbl = new JLabel(" QUESTION  ASKED ");
+        toplbl = new JLabel(" PRIZE WIN HISTORY ");
         toplbl.setForeground(Color.WHITE);
         toplbl.setBounds(0, 0, 1300,75);
         toplbl.setFont(new Font("MOnospace", Font.PLAIN, 20));
@@ -63,8 +66,8 @@ public class MyHistory implements ActionListener {
         toplbl.setVerticalAlignment(SwingConstants.CENTER);
         lbl.add(toplbl);
 
-        back = new JLabel(" < - - HomePage ");
-        back.setToolTipText(" Click for HomePage ");
+        back = new JLabel(" < - - Back to Questions Asked ");
+        back.setToolTipText("");
         back.setFont(new Font("MOnospace", Font.PLAIN, 18));
         back.setForeground(new Color(205,0,0) );
         back.setOpaque(false);
@@ -76,6 +79,36 @@ public class MyHistory implements ActionListener {
         back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
               back.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    try {
+                        System.out.println("inst quit");
+                        lbl.setVisible(false);
+                        lbl.setText("");
+                        System.out.println("inst quit2");
+
+                        // this is for linking another file where should this label directs.
+                        new MyAccount(f, stm);
+                    } catch (Exception e1) {
+        
+                        e1.printStackTrace();
+                    }
+                }
+            });
+
+        homePage = new JLabel(" < - - HomePage ");
+        homePage.setToolTipText(" Click for HomePage ");
+        homePage.setFont(new Font("MOnospace", Font.PLAIN, 18));
+        homePage.setForeground(new Color(205,0,0) );
+        homePage.setOpaque(false);
+        
+        homePage.setBounds(500, 120, 200, 40);
+        
+        lbl.add(homePage);
+
+        homePage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+              homePage.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     try {
@@ -106,41 +139,41 @@ public class MyHistory implements ActionListener {
         sn.setVerticalAlignment(SwingConstants.CENTER);
         lbl.add(sn);
 
-        levelLbl = new JLabel("Level");
-        levelLbl.setOpaque(true);
-        // levelLbl.setBackground(Color.decode("#FFFFFF"));
-        levelLbl.setBackground( new Color(205, 0, 0) );
+        dateLbl = new JLabel("Date");
+        dateLbl.setOpaque(true);
+        // dateLbl.setBackground(Color.decode("#FFFFFF"));
+        dateLbl.setBackground( new Color(205, 0, 0) );
         
-        levelLbl.setForeground(Color.WHITE);
-        levelLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        levelLbl.setHorizontalAlignment(SwingConstants.CENTER);
-        levelLbl.setVerticalAlignment(SwingConstants.CENTER);
-        levelLbl.setVerticalAlignment(SwingConstants.CENTER);
-        levelLbl.setBounds(190, 200, 80, 30);
-        lbl.add(levelLbl);
+        dateLbl.setForeground(Color.WHITE);
+        dateLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        dateLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        dateLbl.setVerticalAlignment(SwingConstants.CENTER);
+        dateLbl.setVerticalAlignment(SwingConstants.CENTER);
+        dateLbl.setBounds(190, 200, 80, 30);
+        lbl.add(dateLbl);
 
-        questionLbl = new JLabel("Question");
-        questionLbl.setOpaque(true);
-        questionLbl.setBackground( new Color(205, 0, 0) );
+        timeLbl = new JLabel("Time");
+        timeLbl.setOpaque(true);
+        timeLbl.setBackground( new Color(205, 0, 0) );
      
-        questionLbl.setForeground(Color.WHITE);
-        questionLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        questionLbl.setHorizontalAlignment(SwingConstants.CENTER);
-        questionLbl.setVerticalAlignment(SwingConstants.CENTER);
+        timeLbl.setForeground(Color.WHITE);
+        timeLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        timeLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        timeLbl.setVerticalAlignment(SwingConstants.CENTER);
         
-        questionLbl.setBounds(280, 200, 450, 30);
-        lbl.add(questionLbl);
+        timeLbl.setBounds(280, 200, 450, 30);
+        lbl.add(timeLbl);
 
-        answerLbl = new JLabel("Answer");
-        answerLbl.setOpaque(true);
-        // answerLbl.setBackground(Color.decode("#FFFFFF"));
-        answerLbl.setBackground( new Color(205, 0, 0) );
-        answerLbl.setForeground(Color.WHITE);
-        answerLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
-        answerLbl.setHorizontalAlignment(SwingConstants.CENTER);
-        answerLbl.setVerticalAlignment(SwingConstants.CENTER);
-        answerLbl.setBounds(740, 200, 300, 30);
-        lbl.add(answerLbl);
+        prizeLbl = new JLabel("Amount Won");
+        prizeLbl.setOpaque(true);
+        // prizeLbl.setBackground(Color.decode("#FFFFFF"));
+        prizeLbl.setBackground( new Color(205, 0, 0) );
+        prizeLbl.setForeground(Color.WHITE);
+        prizeLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
+        prizeLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        prizeLbl.setVerticalAlignment(SwingConstants.CENTER);
+        prizeLbl.setBounds(740, 200, 300, 30);
+        lbl.add(prizeLbl);
         // back = new JLabel("< - - HomePage ");
         // back.setFont(new Font("MOnospace", Font.PLAIN, 18));
         // back.setForeground(new Color(205,0,0) );
@@ -175,9 +208,9 @@ public class MyHistory implements ActionListener {
                 reached = reached / 10 * 10;
                 fillLabels();
 
-                System.out.println("reached: " + reached + ", size: " + levelList.size());
+                System.out.println("reached: " + reached + ", size: " + dateList.size());
 
-                if(reached >= levelList.size()){
+                if(reached >= dateList.size()){
                     next.setVisible(false);
                 }else{
                     next.setVisible(true);
@@ -229,8 +262,8 @@ public class MyHistory implements ActionListener {
                 // // this is for linking another file where should this label directs.
                 // new FirstInterface(f, stm);
                 fillLabels();
-                System.out.println("reached: " + reached + ", size: " + levelList.size());
-                if(reached >= levelList.size()){
+                System.out.println("reached: " + reached + ", size: " + dateList.size());
+                if(reached >= dateList.size()){
                     next.setVisible(false);
                 }else{
                     next.setVisible(true);
@@ -253,9 +286,11 @@ public class MyHistory implements ActionListener {
 
         
         int temp = 0, user_id = 1;
-        String questionStr, answerStr;
+        // String timeTime, prizeInt;
         String query;
-        int idInt, levelInt;
+        int idInt, prizeInt;
+        Date dateDate;
+        Time timeTime;
         try{
 
             query = "select * from login_details where logged_in = 'yes'";
@@ -264,22 +299,22 @@ public class MyHistory implements ActionListener {
                 user_id = rst.getInt("id");
             }
         
-            query = "select distinct user_id, level, question, answer from question_asked where user_id = " + user_id;
+            query = "select * from win_history where user_id = " + user_id;
 
             rst = stm.executeQuery(query);
             while(rst.next()){
                 temp++;
-                JLabel snTemp, levelTemp, questionTemp, answerTemp;
+                JLabel snTemp, dateTemp, timeTemp, prizeTemp;
                 JButton acc, rej;
 
                 idInt = rst.getInt("user_id");
-                levelInt = rst.getInt("level");
-                questionStr = rst.getString("question");
-                answerStr = rst.getString("answer");
+                dateDate = rst.getDate("date");
+                timeTime = rst.getTime("time");
+                prizeInt = rst.getInt("prize_won");
 
-                levelList.add(levelInt);
-                questionList.add(questionStr);
-                answerList.add(answerStr);
+                dateList.add(dateDate);
+                timeListList.add(timeTime);
+                prizeList.add(prizeInt);
 
                 // // idList.add(idInt);
 
@@ -289,23 +324,23 @@ public class MyHistory implements ActionListener {
                 // snTemp.setBounds(50, 200 + 50 * temp, 40, 30);
                 // lbl.add(snTemp);
 
-                // levelTemp = new JLabel("" + levelInt);
-                // levelTemp.setOpaque(true);
-                // levelTemp.setBackground(Color.decode("#FFFFFF"));
-                // levelTemp.setBounds(100, 200 + 50 * temp, 240, 30);
-                // lbl.add(levelTemp);
+                // dateTemp = new JLabel("" + dateDate);
+                // dateTemp.setOpaque(true);
+                // dateTemp.setBackground(Color.decode("#FFFFFF"));
+                // dateTemp.setBounds(100, 200 + 50 * temp, 240, 30);
+                // lbl.add(dateTemp);
 
-                // questionTemp = new JLabel(questionStr);
-                // questionTemp.setOpaque(true);
-                // questionTemp.setBackground(Color.decode("#FFFFFF"));
-                // questionTemp.setBounds(350, 200 + 50 * temp, 240, 30);
-                // lbl.add(questionTemp);
+                // timeTemp = new JLabel(timeTime);
+                // timeTemp.setOpaque(true);
+                // timeTemp.setBackground(Color.decode("#FFFFFF"));
+                // timeTemp.setBounds(350, 200 + 50 * temp, 240, 30);
+                // lbl.add(timeTemp);
 
-                // answerTemp = new JLabel(answerStr);
-                // answerTemp.setOpaque(true);
-                // answerTemp.setBackground(Color.decode("#FFFFFF"));
-                // answerTemp.setBounds(600, 200 + 50 * temp, 240, 30);
-                // lbl.add(answerTemp);
+                // prizeTemp = new JLabel(prizeInt);
+                // prizeTemp.setOpaque(true);
+                // prizeTemp.setBackground(Color.decode("#FFFFFF"));
+                // prizeTemp.setBounds(600, 200 + 50 * temp, 240, 30);
+                // lbl.add(prizeTemp);
 
                 // acc = new JButton("ACCEPT");
                 // acc.setBounds(600, 200 + 50 * temp, 140, 30);
@@ -331,18 +366,20 @@ public class MyHistory implements ActionListener {
         addQuestionLabels();
         fillLabels();
 
-        if(reached >= levelList.size()){
+        if(reached >= dateList.size()){
             next.setVisible(false);
         }
     }
 
     public void addQuestionLabels(){
-        JLabel snTemp, levelTemp, questionTemp, answerTemp;
+        JLabel snTemp, dateTemp, timeTemp, prizeTemp;
         JButton acc, rej;
 
-        String questionStr, answerStr;
+        Time timeTime;
+        int prizeInt;
         String query;
-        int idInt, levelInt, temp = 0;
+        int idInt, temp = 0;
+        Date dateDate;
 
         while(temp < 10){
 
@@ -353,26 +390,26 @@ public class MyHistory implements ActionListener {
             lbl.add(snTemp);
             snLabelList[temp] = snTemp;
 
-            levelTemp = new JLabel("1");
-            levelTemp.setOpaque(true);
-            levelTemp.setBackground(Color.decode("#FFFFFF"));
-            levelTemp.setBounds(210, 230 + 30 * temp, 80, 30);
-            lbl.add(levelTemp);
-            levelLabelList[temp] = levelTemp;
+            dateTemp = new JLabel("2022-11-01");
+            dateTemp.setOpaque(true);
+            dateTemp.setBackground(Color.decode("#FFFFFF"));
+            dateTemp.setBounds(210, 230 + 30 * temp, 80, 30);
+            lbl.add(dateTemp);
+            dateLabelList[temp] = dateTemp;
 
-            questionTemp = new JLabel("Which is the national bird of the United States of America?");
-            questionTemp.setOpaque(true);
-            questionTemp.setBackground(Color.decode("#FFFFFF"));
-            questionTemp.setBounds(300, 230 + 30 * temp, 500, 30);
-            lbl.add(questionTemp);
-            qsnLabelList[temp] = questionTemp;
+            timeTemp = new JLabel("19:31:23");
+            timeTemp.setOpaque(true);
+            timeTemp.setBackground(Color.decode("#FFFFFF"));
+            timeTemp.setBounds(300, 230 + 30 * temp, 500, 30);
+            lbl.add(timeTemp);
+            timeLabelList[temp] = timeTemp;
 
-            answerTemp = new JLabel("Alexander Graham Bell");
-            answerTemp.setOpaque(true);
-            answerTemp.setBackground(Color.decode("#FFFFFF"));
-            answerTemp.setBounds(800, 230 + 30 * temp, 400, 30);
-            lbl.add(answerTemp);
-            ansLabelList[temp] = answerTemp;
+            prizeTemp = new JLabel("$1000000");
+            prizeTemp.setOpaque(true);
+            prizeTemp.setBackground(Color.decode("#FFFFFF"));
+            prizeTemp.setBounds(800, 230 + 30 * temp, 400, 30);
+            lbl.add(prizeTemp);
+            prizeLabelList[temp] = prizeTemp;
 
             temp++;
         }
@@ -385,11 +422,11 @@ public class MyHistory implements ActionListener {
 
         while(temp < 10){
             snLabelList[temp].setText("" + (reached + 1));
-            levelLabelList[temp].setText("" + levelList.get(reached));
-            qsnLabelList[temp].setText(questionList.get(reached));
-            ansLabelList[temp].setText(answerList.get(reached));
+            dateLabelList[temp].setText("" + dateList.get(reached));
+            timeLabelList[temp].setText("" + timeListList.get(reached));
+            prizeLabelList[temp].setText("$" + prizeList.get(reached));
 
-            if(reached + 1 == levelList.size()){
+            if(reached + 1 == dateList.size()){
                 flag = 1;
             }
 
@@ -397,9 +434,9 @@ public class MyHistory implements ActionListener {
                 temp++;
                 while(temp < 10){
                     snLabelList[temp].setText("");
-                    levelLabelList[temp].setText("");
-                    qsnLabelList[temp].setText("");
-                    ansLabelList[temp].setText("");
+                    dateLabelList[temp].setText("");
+                    timeLabelList[temp].setText("");
+                    prizeLabelList[temp].setText("");
                     temp++;
                 }
             }

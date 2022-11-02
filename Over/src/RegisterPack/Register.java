@@ -250,17 +250,17 @@ public class Register implements ActionListener {
                 if(rst.next()){
                     // query = "update login_details set logged_in = 'yes' where email = '" + emailStr + "'";
                     // stm.executeUpdate(query);
-                    if(rst.getString("admin_status").equals("accepted")){
-                        query = "update login_details set logged_in = 'yes' where email = '" + emailStr + "'";
-                        stm.executeUpdate(query);
-                        lbl.setVisible(false);
-                        new Question(f, stm);
-                    }else{
+                    // if(rst.getString("admin_status").equals("accepted")){
+                    //     query = "update login_details set logged_in = 'yes' where email = '" + emailStr + "'";
+                    //     stm.executeUpdate(query);
+                    //     lbl.setVisible(false);
+                    //     new Question(f, stm);
+                    // }else{
                         query = "update login_details set logged_in = 'yes' where email = '" + emailStr + "'";
                         stm.executeUpdate(query);
                         lbl.setVisible(false);
                         new FirstInterface(f, stm);
-                    }
+                    // }
                 }
 
                 // System.out.println("success");
