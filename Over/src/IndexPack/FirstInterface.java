@@ -5,6 +5,7 @@ import HistoryPack.*;
 import InstructionPack.*;
 import RulesPack.*;
 import QuestionPack.*;
+import LeaderBoardPack.*;
 import RegisterPack.*;
 import java.awt.*;
 
@@ -206,7 +207,7 @@ public class FirstInterface implements ActionListener{
         }else if(eventSource == rules){
             
             indexLabel.setVisible(false);
-            new PlayGame(myFrame, stm); // TODO: new Rules
+            new LeaderBoard(myFrame, stm); // TODO: new Rules
 
         }
         //  else if(eventSource == register){
