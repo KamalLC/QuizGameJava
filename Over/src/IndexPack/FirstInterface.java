@@ -25,12 +25,14 @@ import java.sql.ResultSet;
 import javax.swing.*;
 
 public class FirstInterface implements ActionListener{
+    private static final String ToolKit = null;
+    // private static final String ToolKit = null;
     JFrame myFrame;
     Connection conn;
     Statement stm;
     ResultSet rst;
     JButton rules, play, instruction, exit, test;
-    JLabel register;
+    JLabel register, QuestionAskedHistory, LeaderBoard, History;
     GridLayout gdl;
     public static FirstInterface fi;
     JLabel lbl, indexLabel;
@@ -84,9 +86,29 @@ public class FirstInterface implements ActionListener{
         register.setFont(new Font("MOnospace", Font.PLAIN, 20));
         register.setForeground(Color.BLUE);
         register.setOpaque(false);
-        
-        register.setBounds(1000, 100, 400, 22);
+        register.setBounds(700, 100, 100, 25);
         indexLabel.add(register);
+
+        History = new JLabel("History");
+        History.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        History.setForeground(Color.BLUE);
+        History.setOpaque(false);
+        History.setBounds(815, 100, 100, 25);
+        indexLabel.add(History);
+
+        QuestionAskedHistory = new JLabel("Question Asked");
+        QuestionAskedHistory.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        QuestionAskedHistory.setForeground(Color.BLUE);
+        QuestionAskedHistory.setOpaque(false);
+        QuestionAskedHistory.setBounds(920, 100, 200, 25);
+        indexLabel.add(QuestionAskedHistory);
+
+        LeaderBoard = new JLabel("LeaderBoard");
+        LeaderBoard.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        LeaderBoard.setForeground(Color.BLUE);
+        LeaderBoard.setOpaque(false);
+        LeaderBoard.setBounds(1100, 100, 120, 25);
+        indexLabel.add(LeaderBoard);
         
         rules = new JButton("Rules");
         rules.setToolTipText("Click for Rules");
@@ -145,7 +167,7 @@ public class FirstInterface implements ActionListener{
         register.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
-            // new Question(myFrame, stm); // TODO: comment this later
+            new Question(myFrame, stm); // TODO: comment this later
               try {
                  
                 indexLabel.setVisible(false);
@@ -156,9 +178,11 @@ public class FirstInterface implements ActionListener{
                  
                 if(rst.next()){
                     if(rst.getString("admin_status").equals("accepted")){
+                        indexLabel.setVisible(false);
                         new Question(myFrame, stm);
                     }
                 }else{
+                    indexLabel.setVisible(false);
                     new Register(myFrame, stm);
                 }
                   // this is for linking another file where should this label directs.
@@ -170,12 +194,74 @@ public class FirstInterface implements ActionListener{
           }
       });
 
+      History.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+      History.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            try {
+                
+                indexLabel.setVisible(false);
+                // this is for linking another file where should this label directs.
+                new MyAccount(myFrame, stm);
+            } catch (Exception e1) {
+
+                e1.printStackTrace();
+            }
+        }
+    });
+
+      QuestionAskedHistory.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+      QuestionAskedHistory.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            try {
+                
+                indexLabel.setVisible(false);
+                // this is for linking another file where should this label directs.
+                new MyHistory(myFrame, stm);
+            } catch (Exception e1) {
+
+                e1.printStackTrace();
+            }
+        }
+    });
+
+    LeaderBoard.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+    LeaderBoard.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+          try {
+              
+            indexLabel.setVisible(false);
+              // this is for linking another file where should this label directs.
+              new LeaderBoard(myFrame, stm);
+          } catch (Exception e1) {
+
+              e1.printStackTrace();
+          }
+      }
+  });
+
+
 
         frame.add(indexLabel);
 
-        
-
+        /**
+         * 
+         */
+     
     }
+    public void close(){
+        // WindowEvent closeWindow = new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING);
+        // ToolKit.getDefaultToolkit().getSystemEventQueue.postEvent(closeWindow);
+        myFrame.dispose();
+    }
+
+    
+
     public void actionPerformed(ActionEvent ae){
         JButton eventSource = (JButton)ae.getSource();
         
@@ -207,9 +293,16 @@ public class FirstInterface implements ActionListener{
         }else if(eventSource == rules){
             
             indexLabel.setVisible(false);
-            new LeaderBoard(myFrame, stm); // TODO: new Rules
+            new Register(myFrame, stm); // TODO: new Rules
 
         }
+        else if(eventSource == exit)
+            close();
+                }
+
+            
+
+        
         //  else if(eventSource == register){
         //     indexLabel.setVisible(false);
         //      new Question(myFrame, stm);
@@ -259,4 +352,4 @@ public class FirstInterface implements ActionListener{
 //        // fi.getContentPane().setBackground(Color.WHITE);
 //        // fi.setVisible(true);
 //    }
-}
+

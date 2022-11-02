@@ -448,7 +448,7 @@ public class Question implements ActionListener {
         name.setVerticalAlignment(SwingConstants.CENTER);
         name.setBackground(new Color(205,0,0) );
         name.setOpaque(true);
-        name.setBounds(160, 150, 240, 40);
+        name.setBounds(170, 150, 240, 40);
         admin_lbl.add(name);
 
         email = new JLabel("EMAIL");
@@ -458,7 +458,7 @@ public class Question implements ActionListener {
         email.setVerticalAlignment(SwingConstants.CENTER);
         email.setBackground(new Color(205,0,0) );
         email.setOpaque(true);
-        email.setBounds(400, 150, 240, 40);
+        email.setBounds(420, 150, 240, 40);
         admin_lbl.add(email);
 
         back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

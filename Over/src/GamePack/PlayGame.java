@@ -465,6 +465,7 @@ void startTimer(int timeLimit){
 
             if(i < 0){
                 timer.cancel();
+                wrongAnswerFlag = 1;
                 // timerLabel.setText("Time Over");
                 lockBtn.setEnabled(false);
 
@@ -555,7 +556,7 @@ void startTimer(int timeLimit){
             int temp = 0;
             while(rst.next()){
                 ids[temp] = rst.getInt("id");
-                System.out.println(ids[temp]);
+                // System.out.println(ids[temp]);
                 temp++;
             }
         }catch(Exception e){
@@ -584,7 +585,7 @@ void startTimer(int timeLimit){
                 return generateQuestionId();
             }else{
                 oneAskedIndices.push(ids[result]);
-                System.out.println("result: "+ result + " ids[result]:" + ids[result]);
+                // System.out.println("result: "+ result + " ids[result]:" + ids[result]);
                 return ids[result];
             }
         }
@@ -765,7 +766,7 @@ void startTimer(int timeLimit){
             }
         }
 
-        System.out.println("Question Id: " + result);
+        // System.out.println("Question Id: " + result);
         
         return 0;
         // if(gameLevel == 1){
@@ -806,6 +807,7 @@ void startTimer(int timeLimit){
 
     public void startGame(){
         questionCount++;
+        System.out.println("gameLevel: " + gameLevel);
 
         if(swapFlag == 1){
             questionCount--;
@@ -827,7 +829,7 @@ void startTimer(int timeLimit){
         try{
             questionIndex = generateQuestionId();
 
-            System.out.println("Question Id: " + questionIndex);
+            // System.out.println("Question Id: " + questionIndex);
             
             String query = "select * from question_list where id = " + questionIndex;
 
@@ -839,7 +841,7 @@ void startTimer(int timeLimit){
                 optionC = rst.getString("option_c");
                 optionD = rst.getString("option_d");
                 correctAnswer = rst.getString("correct_answer");
-                System.out.println("A: " + optionA + " B: " + optionB + " C: " + optionC + " D: " + optionD + " Correct: " + correctAnswer);
+                // System.out.println("A: " + optionA + " B: " + optionB + " C: " + optionC + " D: " + optionD + " Correct: " + correctAnswer);
                 // timeLimit = 30;
             }
         }catch(Exception e){
@@ -1081,11 +1083,11 @@ void startTimer(int timeLimit){
             }
         
             // stm = conn.createStatement();
-            System.out.println("testing");
+            // System.out.println("testing");
             query = "INSERT INTO question_asked(user_id, level, question, answer) VALUES('"+id_temp+"','"+gameLevel+"','"+currentQuestion+"','"+correctAnswer+"')";
-            System.out.println("testing 2");
+            // System.out.println("testing 2");
             stm.executeUpdate(query);
-            System.out.println("Inserted into table");
+            // System.out.println("Inserted into table");
         }catch(Exception ex){
             System.out.println("error in updatePlayerDatabase: " + ex.getMessage());
         }
@@ -1111,8 +1113,8 @@ void startTimer(int timeLimit){
         }
 
         if(choosedBtn.getText().equals(correctAnswer)){
-            System.out.println("correct answer clicked");
-            System.out.println("choosed: " + choosedBtn.getText() + " Correct: " + correctAnswer);
+            // System.out.println("correct answer clicked");
+            // System.out.println("choosed: " + choosedBtn.getText() + " Correct: " + correctAnswer);
             doubleFlag = 0;
             // choosedBtn.setBackground(Color.GREEN);
             choosedBtn.setBackground(Color.GREEN);
@@ -1132,10 +1134,10 @@ void startTimer(int timeLimit){
                 gameOver();
             }
         }else{
-            System.out.println("wrong answer clicked");
-            System.out.println("choosed: " + choosedBtn.getText() + " Correct: " + correctAnswer);
-            System.out.print("conditions: ");
-            System.out.println(choosedBtn.getText().equals(correctAnswer));
+            // System.out.println("wrong answer clicked");
+            // System.out.println("choosed: " + choosedBtn.getText() + " Correct: " + correctAnswer);
+            // System.out.print("conditions: ");
+            // System.out.println(choosedBtn.getText().equals(correctAnswer));
             // choosedBtn.setBackground(Color.RED);
             choosedBtn.setBackground(Color.red);
             choosedBtn.setEnabled(false);
@@ -1166,6 +1168,7 @@ void startTimer(int timeLimit){
 
     public void nextButtonClicked(){
         enableLifeLines();
+        gameLevel++;
         nextQuestionBtn.setVisible(false);
         option1.setVisible(true);
         option2.setVisible(true);
@@ -1173,9 +1176,12 @@ void startTimer(int timeLimit){
         option4.setVisible(true);
         lockBtn.setVisible(true);
         lockBtn.setEnabled(false);
+
+        submitted = 0;
         // questionIndex++;
         // System.out.println(questionIndex);
         // System.out.println(questions[questionIndex][0]);
+        System.out.println("quit flag: " + quitFlag + ", submitted = " + submitted + "level: " + gameLevel + "questionCount: " + questionCount);
         startGame();
     }
 
@@ -1240,8 +1246,8 @@ void startTimer(int timeLimit){
     }
 
     public void enableLifeLines(){
-        System.out.println("enable life lines. fifty = " + fiftyFiftyFlagUsed);
-        System.out.println("double = " + doubleFlag + "swapFlag = " + swapFlagUsed);
+        // System.out.println("enable life lines. fifty = " + fiftyFiftyFlagUsed);
+        // System.out.println("double = " + doubleFlag + "swapFlag = " + swapFlagUsed);
         fiftyFiftyBtn.setEnabled(true);
         doubleDieBtn.setEnabled(true);
         swapBtn.setEnabled(true);
@@ -1262,9 +1268,10 @@ void startTimer(int timeLimit){
 
     public void actionPerformed(ActionEvent ae){
         currentBtn = (JButton)ae.getSource();
-        System.out.println("called0");
+        // System.out.println("called0");
         
         if(currentBtn.equals(quitBtn)){
+            quitFlag = 1;
             // System.out.println("called1");
             gameOver();
             // // System.out.println("called3");
@@ -1276,6 +1283,7 @@ void startTimer(int timeLimit){
             temp.scheduleAtFixedRate(new TimerTask(){
                 int xyz = 0;
                 public void run(){
+                    System.out.println("quit flag: " + quitFlag + ", submitted = " + submitted + "level: " + gameLevel + "questionCount: " + questionCount);
                     xyz++;
                     temp.cancel();
                     gameLabel.setVisible(false);
@@ -1293,7 +1301,7 @@ void startTimer(int timeLimit){
             || currentBtn.getText().equals(optionC) || currentBtn.getText().equals(optionD)){
             optionButtonClicked();
         }else if(currentBtn.getText().equals("Lock")){
-            System.out.println("lock button clicked");
+            // System.out.println("lock button clicked");
             lockButtonClicked();
         
         }else if(currentBtn.getText().equals("Next")){
@@ -1328,12 +1336,24 @@ void startTimer(int timeLimit){
         quitBtn.setEnabled(true);
 
         decorateMoneyTree();
-        System.out.println("reached 1");
+        // System.out.println("reached 1");
 
         int winAmount = 0;
         for(int i = 0; i < 12; i++){
             if(moneyLevel[i].getBackground().equals(Color.decode("#FFCE45"))){
+                // if(quitFlag == 1 && submitted == 0){
+                //     // System.out.println("quit condition is working fine");
+                //     winAmount = winningPrices[i - 1];
+                //     // System.out.println(winningPrices[i - 1]);
+                //     // System.out.println("gameLevel: " + gameLevel);
+                // }else{
+                //     winAmount = winningPrices[i];
+                // }
                 winAmount = winningPrices[i];
+            }
+
+            if(questionCount == 0 && submitted == 0){
+                winAmount = 0;
             }
            
             
@@ -1356,7 +1376,7 @@ void startTimer(int timeLimit){
         } 
 
 
-        System.out.println("reached 2");
+        // System.out.println("reached 2");
         winLbl.setText("Congratulation ! you won $" + winAmount);
         winLbl.setVisible(true);
         timerLabel.setVisible(false);
@@ -1436,7 +1456,7 @@ void startTimer(int timeLimit){
         moneyLevel[10] = l11;
         moneyLevel[11] = l12;
 
-        System.out.println("questions count = " + questionCount);
+        // System.out.println("questions count = " + questionCount);
 
         for(int i = 0; i < 12; i++){
             moneyLevel[i].setOpaque(true);
@@ -1469,6 +1489,17 @@ void startTimer(int timeLimit){
                 }else if(gameLevel == 3){
                     moneyLevel[6].setBackground(Color.decode("#FFCE45"));
                     moneyLevel[6].setForeground(Color.decode("#000000"));
+                }
+            }
+
+            if(quitFlag == 1 && submitted == 0){
+                if(i == questionCount){
+                    if(i > 1){
+                        moneyLevel[i - 2].setBackground(Color.decode("#FFCE45"));
+                        moneyLevel[i - 2].setForeground(Color.decode("#000000"));
+                    }
+                    moneyLevel[i - 1].setBackground(new Color(153, 0, 0));
+                    moneyLevel[i - 1].setForeground(Color.decode("#BF9742"));
                 }
             }
         }

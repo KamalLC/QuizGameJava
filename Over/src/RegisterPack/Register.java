@@ -16,7 +16,8 @@ public class Register implements ActionListener {
     ResultSet rst, rst2;
     JLabel lbl, toplbl, nameLabel, emailLabel, pwdLabel, confirmPasswordLabel;
     JButton login, register, submit, cancel;
-    JTextField username, email, password, confirmPassword;
+    JTextField username, email;
+    JPasswordField password, confirmPassword;
     JCheckBox checkBox;
     
     public Register(JFrame frame, Statement st){ 
@@ -89,6 +90,7 @@ public class Register implements ActionListener {
         username = new JTextField();
         username.setBounds(300, 230, 500, 40);
         username.setBackground( new Color(204, 204, 204) );
+        username.setFont(new Font("MOnospace", Font.BOLD, 15));
         lbl.add(username);
 
         
@@ -114,6 +116,7 @@ public class Register implements ActionListener {
         email = new JTextField();
         email.setBounds(300, 300, 500, 40);
         email.setBackground( new Color(204, 204, 204) );
+        email.setFont(new Font("MOnospace", Font.BOLD, 15));
         lbl.add(email);
 
         // pwdLabel = new JLabel("Password");
@@ -134,9 +137,10 @@ public class Register implements ActionListener {
         // password.setBounds(350, 400, 200, 30);
         // lbl.add(password);
 
-        password = new JTextField();
+        password = new JPasswordField();
         password .setBounds(300, 370, 500, 40);
         password .setBackground( new Color(204, 204, 204) );
+        password.setFont(new Font("MOnospace", Font.BOLD, 15));
         lbl.add(password );
 
         // confirmPasswordLabel = new JLabel("Confirm Password");
@@ -157,9 +161,10 @@ public class Register implements ActionListener {
         // confirmPassword.setBounds(350, 450, 200, 30);
         // lbl.add(confirmPassword);
 
-        confirmPassword = new JTextField();
+        confirmPassword = new JPasswordField();
         confirmPassword.setBounds(300, 440, 500, 40);
         confirmPassword.setBackground( new Color(204, 204, 204) );
+        confirmPassword.setFont(new Font("MOnospace", Font.BOLD, 15));
         lbl.add(confirmPassword );
 
         checkBox = new JCheckBox("   Request  for  admin  access.   ");

@@ -77,7 +77,7 @@ public class LeaderBoard implements ActionListener {
         
         back.setBounds(100, 120, 200, 40);
         
-        lbl.add(back);
+        // lbl.add(back);
 
         back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -105,7 +105,7 @@ public class LeaderBoard implements ActionListener {
         homePage.setForeground(new Color(205,0,0) );
         homePage.setOpaque(false);
         
-        homePage.setBounds(500, 120, 200, 40);
+        homePage.setBounds(100, 120, 200, 40);
         
         lbl.add(homePage);
 
@@ -142,7 +142,7 @@ public class LeaderBoard implements ActionListener {
         sn.setVerticalAlignment(SwingConstants.CENTER);
         lbl.add(sn);
 
-        nameLbl = new JLabel("Name");
+        nameLbl = new JLabel("Kamal Lamichhane");
         nameLbl.setOpaque(true);
         // nameLbl.setBackground(Color.decode("#FFFFFF"));
         nameLbl.setBackground( new Color(205, 0, 0) );
@@ -152,10 +152,10 @@ public class LeaderBoard implements ActionListener {
         nameLbl.setHorizontalAlignment(SwingConstants.CENTER);
         nameLbl.setVerticalAlignment(SwingConstants.CENTER);
         nameLbl.setVerticalAlignment(SwingConstants.CENTER);
-        nameLbl.setBounds(190, 200, 80, 30);
+        nameLbl.setBounds(190, 200, 300, 30);
         lbl.add(nameLbl);
 
-        gameCountLbl = new JLabel("Togal game played");
+        gameCountLbl = new JLabel("Total game played");
         gameCountLbl.setOpaque(true);
         gameCountLbl.setBackground( new Color(205, 0, 0) );
      
@@ -164,7 +164,7 @@ public class LeaderBoard implements ActionListener {
         gameCountLbl.setHorizontalAlignment(SwingConstants.CENTER);
         gameCountLbl.setVerticalAlignment(SwingConstants.CENTER);
         
-        gameCountLbl.setBounds(280, 200, 450, 30);
+        gameCountLbl.setBounds(500, 200, 150, 30);
         lbl.add(gameCountLbl);
 
         dateLbl = new JLabel("Last Played");
@@ -175,7 +175,7 @@ public class LeaderBoard implements ActionListener {
         dateLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
         dateLbl.setHorizontalAlignment(SwingConstants.CENTER);
         dateLbl.setVerticalAlignment(SwingConstants.CENTER);
-        dateLbl.setBounds(740, 200, 300, 30);
+        dateLbl.setBounds(660, 200, 300, 30);
         lbl.add(dateLbl);
 
         prizeLbl = new JLabel("Total Winning");
@@ -186,7 +186,7 @@ public class LeaderBoard implements ActionListener {
         prizeLbl.setFont(new Font("MOnospace", Font.PLAIN, 15));
         prizeLbl.setHorizontalAlignment(SwingConstants.CENTER);
         prizeLbl.setVerticalAlignment(SwingConstants.CENTER);
-        prizeLbl.setBounds(940, 200, 300, 30);
+        prizeLbl.setBounds(970, 200, 150, 30);
         lbl.add(prizeLbl);
         // back = new JLabel("< - - HomePage ");
         // back.setFont(new Font("MOnospace", Font.PLAIN, 18));
@@ -260,7 +260,7 @@ public class LeaderBoard implements ActionListener {
         next.setOpaque(false);
         next.setToolTipText(" Click for Next Questions' Asked ");
         
-        next.setBounds(945, 600, 200, 40);
+        next.setBounds(1040, 600, 200, 40);
         
         lbl.add(next);
 
@@ -406,35 +406,35 @@ public class LeaderBoard implements ActionListener {
             snTemp = new JLabel("1");
             snTemp.setOpaque(true);
             snTemp.setBackground(Color.decode("#FFFFFF"));
-            snTemp.setBounds(120, 230 + 30 * temp, 80, 30);
+            snTemp.setBounds(130, 230 + 30 * temp, 50, 30);
             lbl.add(snTemp);
             snLabelList[temp] = snTemp;
 
             nameTemp = new JLabel("Kamal Lamichhane");
             nameTemp.setOpaque(true);
             nameTemp.setBackground(Color.decode("#FFFFFF"));
-            nameTemp.setBounds(210, 230 + 30 * temp, 80, 30);
+            nameTemp.setBounds(200, 230 + 30 * temp, 300, 30);
             lbl.add(nameTemp);
             nameLabelList[temp] = nameTemp;
 
             gamePlayedTemp = new JLabel("11");
             gamePlayedTemp.setOpaque(true);
             gamePlayedTemp.setBackground(Color.decode("#FFFFFF"));
-            gamePlayedTemp.setBounds(300, 230 + 30 * temp, 500, 30);
+            gamePlayedTemp.setBounds(550, 230 + 30 * temp, 80, 30);
             lbl.add(gamePlayedTemp);
             gameCountLabelList[temp] = gamePlayedTemp;
 
             lastPlayedTemp = new JLabel("2022-11-01 00:00:00");
             lastPlayedTemp.setOpaque(true);
             lastPlayedTemp.setBackground(Color.decode("#FFFFFF"));
-            lastPlayedTemp.setBounds(800, 230 + 30 * temp, 130, 30);
+            lastPlayedTemp.setBounds(690, 230 + 30 * temp, 130, 30);
             lbl.add(lastPlayedTemp);
             dateLabelList[temp] = lastPlayedTemp;
 
             prizeTemp = new JLabel("$1000000");
             prizeTemp.setOpaque(true);
             prizeTemp.setBackground(Color.decode("#FFFFFF"));
-            prizeTemp.setBounds(940, 230 + 30 * temp, 400, 30);
+            prizeTemp.setBounds(1000, 230 + 30 * temp, 400, 30);
             lbl.add(prizeTemp);
             prizeLabelList[temp] = prizeTemp;
 
