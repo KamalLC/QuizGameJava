@@ -1411,7 +1411,10 @@ void startTimer(int timeLimit){
         swapFlag = 0;
         quitFlag = 0;
         doubleFlag = 0;
+        // fiftyfl
         fiftyFiftyFlagUsed = 0;
+        doubleFlagUsed = 0;
+        swapFlagUsed = 0;
 
 
 
