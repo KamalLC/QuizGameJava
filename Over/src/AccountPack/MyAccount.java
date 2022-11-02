@@ -264,7 +264,7 @@ public class MyAccount implements ActionListener {
                 user_id = rst.getInt("id");
             }
         
-            query = "select * from question_asked where user_id = " + user_id;
+            query = "select distinct user_id, level, question, answer from question_asked where user_id = " + user_id;
 
             rst = stm.executeQuery(query);
             while(rst.next()){

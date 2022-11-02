@@ -264,7 +264,7 @@ public class MyHistory implements ActionListener {
                 user_id = rst.getInt("id");
             }
         
-            query = "select * from question_asked where user_id = " + user_id;
+            query = "select distinct user_id, level, question, answer from question_asked where user_id = " + user_id;
 
             rst = stm.executeQuery(query);
             while(rst.next()){
@@ -322,7 +322,7 @@ public class MyHistory implements ActionListener {
 
             }
         }catch(Exception e){
-            System.out.println("Error in MyAccount: " + e.getMessage());
+            System.out.println("Error in MyHistory: " + e.getMessage());
         }
 
 

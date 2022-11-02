@@ -13,6 +13,9 @@ import java.lang.Math;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.Date;
+import java.sql.Time;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -28,11 +31,11 @@ import java.util.TimerTask;
 
 
 public class PlayGame implements ActionListener{
-	 // TODO: remove it later
+     // TODO: remove it later
     public static JPanel topLeftPanel,leftCenterPanel , rightPanel, nestRightpanel;
     
     JButton fiftyFiftyBtn, swapBtn, doubleDieBtn, option1, option2, option3, option4, lockBtn, nextQuestionBtn, quitBtn, playAgainBtn; 
-    JLabel lbl1, lbl2, lbl3, l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l14, questionLbl, timerLabel;
+    JLabel lbl1, lbl2, lbl3, l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,l12,l13,l14, questionLbl, timerLabel, toplbl;
     JLabel gameLabel, gameOverLbl, winLbl;
     JFrame gameFrame;
     Connection conn;
@@ -107,7 +110,7 @@ public class PlayGame implements ActionListener{
     };
 
 
-    int i, questionCount = 0, winPoint, questionPoint, submitted=0;
+    int i, questionCount = 0, winPoint, questionPoint, submitted=0, player_id;
     int questionIndex = 0, gameLevel = 0, swapFlag = 0, swapFlagUsed = 0, doubleFlag = 0, fiftyFiftyFlagUsed = 0, doubleFlagUsed = 0;
     int wrongAnswerFlag = 0, quitFlag = 0;
     String correctAnswer;
@@ -147,24 +150,53 @@ public class PlayGame implements ActionListener{
 
         gameLabel = new JLabel();
         gameLabel.setOpaque(true);
-        gameLabel.setBackground(Color.decode("#533483"));
-        gameLabel.setBounds(0, 0, 1000, 1000);
+        // gameLabel.setBackground(Color.decode("#533483"));
+        // gameLabel.setBackground( new Color(205, 0, 0) );
+        // gameLabel.setBackground( new Color(255, 0, 0) );
+        gameLabel.setBounds(0, 0, 1800, 1000);
+
+        toplbl = new JLabel(" PLAY  SECTION ");
+        toplbl.setForeground(Color.WHITE);
+        toplbl.setBounds(0, 0, 1300, 50);
+        toplbl.setFont(new Font("MOnospace", Font.PLAIN, 20));
+        toplbl.setBackground(new Color(153,0,0) );
+        toplbl.setOpaque(true);
+        toplbl.setHorizontalAlignment(SwingConstants.CENTER);
+        toplbl.setVerticalAlignment(SwingConstants.CENTER);
+        gameLabel.add(toplbl);
 
         topLeftPanel.setLayout(new GridLayout(0,3, 50,15));
         fiftyFiftyBtn = new JButton("50 : 50");
-        fiftyFiftyBtn.setBounds(30, 30, 180, 20);
+        fiftyFiftyBtn.setFont(new Font("MOnospace", Font.BOLD, 15));
+        fiftyFiftyBtn.setBounds(80, 80, 200, 50);
+        // fiftyFiftyBtn.setBackground( new Color(255, 102, 102) );
+        // fiftyFiftyBtn.setBackground( new Color(255, 51, 51) );
+        // fiftyFiftyBtn.setBackground( new Color(204, 0, 0) );
+        fiftyFiftyBtn.setBackground( new Color(205, 0, 0) );
+        // fiftyFiftyBtn.setBackground(new Color(153, 0, 0));
+        fiftyFiftyBtn.setForeground(Color.white);
         fiftyFiftyBtn.setToolTipText("Click For 50 : 50");
+
         swapBtn = new JButton("Swap");
-        swapBtn.setBounds(230, 30, 180, 20);
+        swapBtn.setBounds(300, 80, 200, 50);
+        swapBtn.setBackground( new Color(205, 0, 0) );
+        // swapBtn.setBackground( new Color(153, 0, 0));
+        swapBtn.setFont(new Font("MOnospace", Font.BOLD, 15));
+        swapBtn.setForeground(Color.white);
         swapBtn.setToolTipText("Click For Swapping Question");
-        doubleDieBtn = new JButton("Double");
-        doubleDieBtn.setBounds(430, 30, 180, 20);
+
+        doubleDieBtn = new JButton("Double Dip");
+        doubleDieBtn.setBounds(520, 80, 200, 50);
+        doubleDieBtn.setBackground( new Color(205, 0, 0) );
+        // doubleDieBtn.setBackground( new Color(153, 0, 0) );
+        doubleDieBtn.setForeground(Color.white);
+        doubleDieBtn.setFont(new Font("MOnospace", Font.BOLD, 15));
         doubleDieBtn.setToolTipText("Click For DoubleDie");
         
         gameLabel.add(fiftyFiftyBtn);
         gameLabel.add(swapBtn);
         gameLabel.add(doubleDieBtn);
-        topLeftPanel.setBounds(80,25,500, 40);
+        topLeftPanel.setBounds(80,55,500, 40);
         // gameLabel.add(topLeftPanel);
 
         rightPanel = new JPanel(new GridLayout(0, 1));
@@ -175,10 +207,14 @@ public class PlayGame implements ActionListener{
         // rightPanel.setLayout(new GridLayout(12,0, 0, 13));
 
         nestRightpanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 30));
-        nestRightpanel.setBackground(Color.BLUE);
-        rightPanel.setBounds(800,50,150,600);
-        rightPanel.setBackground(Color.decode("#533483"));
-        nestRightpanel.setBounds(800, 50, 400, 550);
+        // nestRightpanel.setBackground( new Color(255, 0, 0) );
+        // nestRightpanel.setBackground( new Color(255, 51, 51) );
+        // nestRightpanel.setBackground(Color.BLUE);
+        rightPanel.setBounds(850,80,350,550);
+        // rightPanel.setBackground(Color.decode("#533483"));
+        rightPanel.setBackground( new Color(153, 0, 0) );
+        
+        nestRightpanel.setBounds(1000, 50, 400, 550);
         
         // leftCenterPanel.setLayout(new GridLayout(12,0, 0, 13));
 
@@ -247,32 +283,37 @@ public class PlayGame implements ActionListener{
         questionLbl = new JLabel();
         // Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 2);
         // questionLbl.setBorder(border);
-        questionLbl.setBounds(80,260, 560, 40);
+        questionLbl.setBounds(80,235, 640, 40);
         questionLbl.setHorizontalAlignment(SwingConstants.CENTER);
         questionLbl.setVerticalAlignment(SwingConstants.CENTER);
         questionLbl.setOpaque(true);;
-        questionLbl.setBackground(Color.BLUE);
+        // questionLbl.setBackground(Color.BLUE);
+        questionLbl.setBackground( new Color(153, 0, 0) );
         questionLbl.setForeground(Color.WHITE);
+        questionLbl.setFont(new Font("Monospace", Font.BOLD, 15));
 
         timerLabel = new JLabel();
         // timerLabel.setAlignmentY();
         timerLabel.setFont(new Font("Monospace", Font.BOLD, 25));
-        timerLabel.setBackground(Color.BLUE);
+        // timerLabel.setBackground(Color.BLUE);
+        timerLabel.setBackground(new Color(250,0,0));
         timerLabel.setVerticalAlignment(SwingConstants.CENTER);
         timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         timerLabel.setOpaque(true);
         timerLabel.setForeground(Color.white);
-        timerLabel.setBounds(80,165, 80, 80);
+        timerLabel.setBounds(80,146, 80, 80);
 
         winLbl = new JLabel();
         // winLbl.setAlignmentY();
         winLbl.setFont(new Font("Monospace", Font.BOLD, 25));
-        winLbl.setBackground(Color.BLUE);
+        // winLbl.setBackground(Color.BLUE);
+        winLbl.setBackground(new Color(255,0,0));
+        
         winLbl.setVerticalAlignment(SwingConstants.CENTER);
         winLbl.setHorizontalAlignment(SwingConstants.CENTER);
         winLbl.setOpaque(true);
         winLbl.setForeground(Color.white);
-        winLbl.setBounds(80,165, 560, 80);
+        winLbl.setBounds(80,175, 640, 50);
 
         // option buttons 
         gameLabel.add(timerLabel);
@@ -282,38 +323,67 @@ public class PlayGame implements ActionListener{
         gameLabel.add(questionLbl);
         
         option1 = new JButton();
-        option1.setBounds(80+35, 340, 210, 35);
+        option1.setBounds(80, 340, 285, 40);
+        option1.setFont(new Font("Monospace", Font.BOLD, 15));
+       
+
         option2 = new JButton();
-        option2.setBounds(360+35, 340, 210, 35);
+        option2.setBounds(435, 340, 285, 40);
+        option2.setFont(new Font("Monospace", Font.BOLD, 15));
+        
+
         option3 = new JButton();
-        option3.setBounds(80+35, 400, 210, 35);
+        option3.setBounds(80, 400 + 5, 285, 40);
+        option3.setFont(new Font("Monospace", Font.BOLD, 15));
+       
+
         option4 = new JButton();
-        option4.setBounds(360+35, 400, 210, 35);
+        option4.setBounds(435, 400 + 5, 285, 40);
+        option4.setFont(new Font("Monospace", Font.BOLD, 15));
+        
 
         lockBtn = new JButton("Lock");
-        lockBtn.setBounds(80+35, 460, 490, 35);
-        nextQuestionBtn = new JButton("Next");
-        nextQuestionBtn.setBounds(80+35, 460, 490, 35);
+        lockBtn.setBounds(80, 460 + 38, 640, 40);
+        lockBtn.setBackground(new Color(255,102,0));
         lockBtn.setToolTipText("Lock Your Answer");
+        lockBtn.setForeground(Color.WHITE);
+        lockBtn.setFont(new Font("Monospace", Font.BOLD, 15));
+        
+
+        nextQuestionBtn = new JButton("Next");
+        nextQuestionBtn.setBounds(80, 460 + 38, 640, 40);
+        nextQuestionBtn.setBackground(new Color(255,102, 0));
+        nextQuestionBtn.setFont(new Font("Monospace", Font.BOLD, 15));
+        
+
         quitBtn= new JButton("Quit");
-        quitBtn.setBounds(80+35, 515, 490, 35);
+        quitBtn.setBounds(80, 515 + 38, 640, 40);
+        quitBtn.setBackground(new Color(255,102,0));
         quitBtn.setToolTipText("Quit Question");
+        quitBtn.setForeground(Color.WHITE);
+        quitBtn.setFont(new Font("Monospace", Font.BOLD, 15));
+
         playAgainBtn = new JButton("Play Again");
-        playAgainBtn.setBounds(80+35, 460, 490, 35);
+        playAgainBtn.setBackground(new Color(255,102,0));
+        playAgainBtn.setBounds(80, 460 + 38, 640, 40);
+        playAgainBtn.setForeground(Color.WHITE);
+        playAgainBtn.setFont(new Font("Monospace", Font.BOLD, 15));
 
 
 
         gameOverLbl = new JLabel("Game Over");
-        gameOverLbl.setBounds(80+35, 570, 490, 35);
+        gameOverLbl.setBounds(80, 570 + 38, 640, 40);
         gameOverLbl.setOpaque(true);
         gameOverLbl.setBackground(Color.red);
         gameOverLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        gameOverLbl.setForeground(Color.WHITE);
+        gameOverLbl.setFont(new Font("Monospace", Font.BOLD, 15));
         gameLabel.add(gameOverLbl);
         gameOverLbl.setVisible(false);
     
 
         // gameOverLbl = new JLabel("Game Over");
-        // gameOverLbl.setBounds(80, 570, 490, 35);
+        // gameOverLbl.setBounds(80, 570, 640, 35);
         // gameOverLbl.setOpaque(true);
         // gameOverLbl.setBackground(Color.red);
         // gameLabel.add(gameOverLbl);
@@ -818,6 +888,7 @@ void startTimer(int timeLimit){
         // nextQuestionLbl.setVisible(false);
 
         option1.setEnabled(true);
+
         option2.setEnabled(true);
         option3.setEnabled(true);
         option4.setEnabled(true);
@@ -884,6 +955,24 @@ void startTimer(int timeLimit){
 
 
 
+        // // option1.setBackground(new Color(153, 153, 153));
+        // option1.setForeground(Color.BLACK);
+        // option1.setBackground(new Color(255, 102, 0) );
+        // // option4.setBackground( new Color(204, 204, 204) );
+        // // option2.setBackground(new Color(153, 153, 153));
+        // // option2.setBackground(new Color(255, 51, 51));
+        // option2.setBackground(new Color(255, 102, 0) );
+        // option2.setForeground(Color.BLACK);
+        // // option3.setBackground(new Color(153, 153, 153));
+        // // option3.setBackground(new Color(255, 51, 51));
+        // option3.setBackground(new Color(255, 102, 0) );
+
+        // option3.setForeground(Color.BLACK);
+        // // option4.setBackground(new Color(255, 51, 51));
+        // option4.setBackground(new Color(255, 102, 0) );
+        // // option4.setBackground(new Color(153, 153, 153));
+        // option4.setForeground(Color.BLACK);
+
         option1.setBackground(Color.WHITE);
         option2.setBackground(Color.WHITE);
         option3.setBackground(Color.WHITE);
@@ -943,18 +1032,22 @@ void startTimer(int timeLimit){
 
         if(option1.getBackground() == Color.red){
             option1.setEnabled(false);
+            // option1.setForeground(Color.WHITE);
             // option1.setForeground(Color.decode("#000000"));
         }
         if(option2.getBackground() == Color.red){
             option1.setEnabled(false);
+            // option1.setForeground(Color.WHITE);
             // option2.setForeground(Color.decode("#000000"));
         }
         if(option3.getBackground() == Color.red){
             option1.setEnabled(false);
+            // option1.setForeground(Color.WHITE);
             // option3.setForeground(Color.decode("#000000"));
         }
         if(option4.getBackground() == Color.red){
             option1.setEnabled(false);
+            // option1.setForeground(Color.WHITE);
             // option4.setForeground(Color.decode("#000000"));
         }
         
@@ -966,6 +1059,7 @@ void startTimer(int timeLimit){
         choosedBtn.setBackground(Color.GRAY);
         // choosedBtn.setForeground(Color.decode("#FDF6EC"));
         choosedBtn.setEnabled(false);
+        
 
         // lockLbl.setVisible(false);
         lockBtn.setVisible(true);
@@ -983,6 +1077,7 @@ void startTimer(int timeLimit){
             rst = stm.executeQuery(query);
             if(rst.next()){
                 id_temp = rst.getInt("id");
+                player_id = id_temp;
             }
         
             // stm = conn.createStatement();
@@ -1012,12 +1107,14 @@ void startTimer(int timeLimit){
             option2.setEnabled(false);
             option3.setEnabled(false);
             option4.setEnabled(false);
+            // option1.setBackground(Color.BLUE);
         }
 
         if(choosedBtn.getText().equals(correctAnswer)){
             System.out.println("correct answer clicked");
             System.out.println("choosed: " + choosedBtn.getText() + " Correct: " + correctAnswer);
             doubleFlag = 0;
+            // choosedBtn.setBackground(Color.GREEN);
             choosedBtn.setBackground(Color.GREEN);
             moneyLevel[questionCount - 1].setBackground(Color.decode("#FFF323"));
             moneyLevel[questionCount - 1].setForeground(Color.decode("#000000"));
@@ -1039,7 +1136,8 @@ void startTimer(int timeLimit){
             System.out.println("choosed: " + choosedBtn.getText() + " Correct: " + correctAnswer);
             System.out.print("conditions: ");
             System.out.println(choosedBtn.getText().equals(correctAnswer));
-            choosedBtn.setBackground(Color.RED);
+            // choosedBtn.setBackground(Color.RED);
+            choosedBtn.setBackground(Color.red);
             choosedBtn.setEnabled(false);
 
             // choosing the button with correct answer
@@ -1085,6 +1183,7 @@ void startTimer(int timeLimit){
         swapFlag = 1;
         swapFlagUsed = 1;
         swapBtn.setEnabled(false);  //TODO: uncomment this later
+        swapBtn.setBackground(new Color(255, 255, 0));
         timer.cancel();
         enableLifeLines();
         startGame();
@@ -1094,6 +1193,7 @@ void startTimer(int timeLimit){
         disableLifeLines();
         fiftyFiftyFlagUsed = 1;
         int removedButton = 0;
+        
         Stack<Integer> checked = new Stack<Integer>();
         int temp;
         // System.out.println("fifty fifty pressed");
@@ -1118,6 +1218,7 @@ void startTimer(int timeLimit){
         }
 
         fiftyFiftyBtn.setEnabled(false); //TODO: uncomment this later
+        fiftyFiftyBtn.setBackground(new Color(255, 255, 0));
     }
 
     public void doubleDipButtonClicked(){
@@ -1126,12 +1227,16 @@ void startTimer(int timeLimit){
         doubleFlagUsed = 1;
         quitBtn.setEnabled(false);
         doubleDieBtn.setEnabled(false);
+        doubleDieBtn.setBackground(new Color(255, 255, 0));
     }
 
     public void disableLifeLines(){
         fiftyFiftyBtn.setEnabled(false);
+        fiftyFiftyBtn.setForeground((Color.BLACK));
         doubleDieBtn.setEnabled(false);
+        doubleDieBtn.setForeground((Color.BLACK));
         swapBtn.setEnabled(false);
+        swapBtn.setForeground((Color.BLACK));
     }
 
     public void enableLifeLines(){
@@ -1230,9 +1335,29 @@ void startTimer(int timeLimit){
             if(moneyLevel[i].getBackground().equals(Color.decode("#FFCE45"))){
                 winAmount = winningPrices[i];
             }
+           
+            
         }
+
+        try{
+            // userId = idList.get(acceptList.indexOf(b));
+            // System.out.println(userId);
+
+            long milli = System.currentTimeMillis();
+            Date date=new java.sql.Date(milli);
+            Time time = new java.sql.Time(milli); 
+
+            String query = "insert into win_history(user_id, date, time, prize_won) values('"+player_id+"','"+date+"','"+time+"','"+winAmount+"')";
+            stm.executeUpdate(query);
+
+            // System.out.println("Connected");
+        }catch(Exception ex){
+            System.out.println("(Error Occured while storing win prize:)"+ex.getMessage());
+        } 
+
+
         System.out.println("reached 2");
-        winLbl.setText("Congratulations! you won $" + winAmount);
+        winLbl.setText("Congratulation ! you won $" + winAmount);
         winLbl.setVisible(true);
         timerLabel.setVisible(false);
     }
@@ -1312,7 +1437,7 @@ void startTimer(int timeLimit){
 
         for(int i = 0; i < 12; i++){
             moneyLevel[i].setOpaque(true);
-            moneyLevel[i].setBackground(Color.decode("#533483"));
+            moneyLevel[i].setBackground(new Color(153, 0, 0));
             moneyLevel[i].setForeground(Color.decode("#BF9742"));
             moneyLevel[i].setHorizontalAlignment(SwingConstants.CENTER);
             moneyLevel[i].setVerticalAlignment(SwingConstants.CENTER);
