@@ -295,6 +295,7 @@ public class FirstInterface implements ActionListener{
         // ToolKit.getDefaultToolkit().getSystemEventQueue.postEvent(closeWindow);
         myFrame.dispose();
     }
+    //change later
 
     public void changeVisibility(){
         if(logged_in_flag == 0){
