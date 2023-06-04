@@ -41,6 +41,23 @@ public class FirstInterface implements ActionListener{
     /**
      * @param FrameTitle
      */
+    
+    public FirstInterface(Statement st){
+        start(st);
+    }
+    
+    
+    public void start(Statement st){
+        
+        JFrame frame;
+        frame = new JFrame();
+        frame.setSize(1800, 1000);
+        frame.setLocation(0, 0);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        
+        new FirstInterface(frame, st);
+    }
     public FirstInterface(JFrame frame, Statement st){
 
         // super(FrameTitle);
@@ -89,7 +106,7 @@ public class FirstInterface implements ActionListener{
         adminTool.setFont(new Font("MOnospace", Font.PLAIN, 20));
         adminTool.setForeground(Color.BLUE);
         adminTool.setOpaque(false);
-        adminTool.setBounds(450, 100, 100, 25);
+        adminTool.setBounds(350, 100, 100, 25);
         indexLabel.add(adminTool);
 
         register = new JLabel("Register/Login");
@@ -103,7 +120,7 @@ public class FirstInterface implements ActionListener{
         History.setFont(new Font("MOnospace", Font.PLAIN, 20));
         History.setForeground(Color.BLUE);
         History.setOpaque(false);
-        History.setBounds(755, 100, 240, 25);
+        History.setBounds(700, 100, 180, 25);
         indexLabel.add(History);
 
         QuestionAskedHistory = new JLabel("Question Asked");
@@ -236,6 +253,7 @@ public class FirstInterface implements ActionListener{
         public void mouseClicked(MouseEvent e) {
             try {
                 
+                System.out.println("history");
                 indexLabel.setVisible(false);
                 // this is for linking another file where should this label directs.
                 new MyHistory(myFrame, stm);
@@ -252,7 +270,7 @@ public class FirstInterface implements ActionListener{
         @Override
         public void mouseClicked(MouseEvent e) {
             try {
-                
+                System.out.println("qsn history");
                 indexLabel.setVisible(false);
                 // this is for linking another file where should this label directs.
                 new MyAccount(myFrame, stm);
@@ -305,8 +323,11 @@ public class FirstInterface implements ActionListener{
          }else{
             if(admin_flag == 1){      
                 // register.setText("Admin Tool");
+                // register.setVisible(false);
+                register.setText("Logout");
                 adminTool.setVisible(true);
             }else{
+
                 register.setText("Logout");
                 adminTool.setVisible(false);
             }
@@ -362,12 +383,12 @@ public class FirstInterface implements ActionListener{
         }else if(eventSource == instruction){
             
             indexLabel.setVisible(false);
-            new MyAccount(myFrame, stm);
+            new Instruction(myFrame, stm);
 
         }else if(eventSource == rules){
             
             indexLabel.setVisible(false);
-            new Register(myFrame, stm); // TODO: new Rules
+            new Rules(myFrame, stm); // TODO: new Rules
 
         }
         else if(eventSource == exit)

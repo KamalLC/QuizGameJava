@@ -74,7 +74,7 @@ public class MyHistory implements ActionListener {
         
         back.setBounds(100, 120, 200, 40);
         
-        lbl.add(back);
+        // lbl.add(back);
 
         back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -204,8 +204,8 @@ public class MyHistory implements ActionListener {
                 // lbl.setVisible(false);
                 // // this is for linking another file where should this label directs.
                 // new FirstInterface(f, stm);
-                reached = reached - 10;
-                reached = reached / 10 * 10;
+                reached = reached - 20;
+                reached = (int) (Math.ceil(reached / 10.0) * 10);
                 fillLabels();
 
                 System.out.println("reached: " + reached + ", size: " + dateList.size());

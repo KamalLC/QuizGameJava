@@ -171,11 +171,14 @@ public class MyAccount implements ActionListener {
                 // lbl.setVisible(false);
                 // // this is for linking another file where should this label directs.
                 // new FirstInterface(f, stm);
-                reached = reached - 10;
-                reached = reached / 10 * 10;
+                reached = reached - 20;
+//                System.out.println("result = " + Math.ceil(reached / 10.0));
+                reached = (int) (Math.ceil(reached / 10.0) * 10);
+                
+//                System.out.println(" in previous before reached: " + reached + ", size: " + levelList.size());
                 fillLabels();
 
-                System.out.println("reached: " + reached + ", size: " + levelList.size());
+//                System.out.println(" in previous reached: " + reached + ", size: " + levelList.size());
 
                 if(reached >= levelList.size()){
                     next.setVisible(false);

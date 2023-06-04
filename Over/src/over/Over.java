@@ -7,6 +7,7 @@ package over;
 
 //import GamePack.*;
 import IndexPack.*;
+//import MainInterface.*;
 //import InstructionPack.*;
 // import kamel.*;
 // import register.*;
@@ -39,14 +40,14 @@ public class Over implements ActionListener{
      */
     public Over(String FrameTitle){
         // super(FrameTitle);
-        frame = new JFrame();
-
-
-        frame.setSize(1800, 1000);
-        frame.setLocation(0, 0);
-        frame.setLayout(null);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+//        frame = new JFrame();
+//
+//
+//        frame.setSize(1800, 1000);
+//        frame.setLocation(0, 0);
+//        frame.setLayout(null);
+//        frame.setVisible(true);
+//        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         try{
             Class.forName("com.mysql.cj.jdbc.Driver"); //driver registration
             //connection to database
@@ -62,9 +63,9 @@ public class Over implements ActionListener{
             // System.out.println("Connected");
         }catch(Exception ex){
             System.out.println("Not connected! (Error Occured:)"+ex);
-        } 
+        }
 
-        new FirstInterface(frame, stm);
+        new FirstInterface(stm);
        
     }
     public void actionPerformed(ActionEvent e){
